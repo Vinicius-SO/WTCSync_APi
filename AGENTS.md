@@ -77,3 +77,14 @@ src/
 - Flyway (migrations)
 - Spring Security
 - REST API (Spring Web MVC)
+
+## TODOs para implementação futura
+
+### Autenticação JWT
+- [ ] Substituir credenciais hardcoded em `AuthController.java` (`admin`/`admin123`) por autenticação com banco de dados
+- [ ] Mover `jwt.secret` para variável de ambiente (`JWT_SECRET`)
+- [ ] Implementar Entity `Usuario` e Repository para persistência
+- [ ] Adicionar endpoint de registro de usuários (`/api/auth/register`)
+- [ ] Implementar logout ( blacklist de tokens ou shorter expiration)
+- [ ] Adicionar refresh token
+- [ ] Implementar testes unitários para `TokenService` e `AuthController`
