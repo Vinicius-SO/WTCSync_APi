@@ -2,7 +2,11 @@ package com.fiap.WtcSync.presentation.controllers;
 
 import com.fiap.WtcSync.application.dtos.AuthRequestDTO;
 import com.fiap.WtcSync.application.dtos.AuthResponseDTO;
+import com.fiap.WtcSync.application.dtos.UsuarioRequestDTO;
+import com.fiap.WtcSync.application.dtos.UsuarioResponseDTO;
 import com.fiap.WtcSync.application.services.TokenService;
+import com.fiap.WtcSync.domain.entities.User;
+import com.fiap.WtcSync.domain.interfaces.IUserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -14,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -22,10 +27,12 @@ public class AuthController {
 
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
+    private final IUserRepository userRepository;
 
-    public AuthController(TokenService tokenService, PasswordEncoder passwordEncoder) {
+    public AuthController(TokenService tokenService, PasswordEncoder passwordEncoder, IUserRepository userRepository) {
         this.tokenService = tokenService;
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/login")
@@ -35,15 +42,37 @@ public class AuthController {
         @ApiResponse(responseCode = "401", description = "Invalid credentials")
     })
     public ResponseEntity<AuthResponseDTO> login(@RequestBody AuthRequestDTO request) {
-        String username = request.username();
-        String password = request.password();
+        Optional<User> userOpt = userRepository.findByEmail(request.email());
 
-        if (!validateCredentials(username, password)) {
+        if (userOpt.isEmpty() || !passwordEncoder.matches(request.password(), userOpt.get().getPassword())) {
             return ResponseEntity.status(401).build();
         }
 
-        String token = tokenService.generateToken(username);
-        return ResponseEntity.ok(new AuthResponseDTO(token, username, tokenService.getExpiration()));
+        User user = userOpt.get();
+        if (!user.getActive()) {
+            return ResponseEntity.status(401).build();
+        }
+
+        String token = tokenService.generateToken(user.getEmail());
+        return ResponseEntity.ok(new AuthResponseDTO(token, user.getEmail(), tokenService.getExpiration()));
+    }
+
+    @PostMapping("/register")
+    @Operation(summary = "Register user", description = "Create a new user account")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "User registered successfully"),
+        @ApiResponse(responseCode = "400", description = "Email already exists")
+    })
+    public ResponseEntity<UsuarioResponseDTO> register(@RequestBody UsuarioRequestDTO request) {
+        if (userRepository.existsByEmail(request.email())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        String encodedPassword = passwordEncoder.encode(request.password());
+        User user = new User("New User", request.email(), encodedPassword, "CLIENT");
+        User saved = userRepository.save(user);
+
+        return ResponseEntity.ok(new UsuarioResponseDTO(saved.getId(), saved.getEmail()));
     }
 
     @GetMapping("/me")
@@ -54,11 +83,7 @@ public class AuthController {
     })
     public ResponseEntity<Map<String, String>> getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        return ResponseEntity.ok(Map.of("username", username));
-    }
-
-    private boolean validateCredentials(String username, String password) {
-        return "admin".equals(username) && "admin123".equals(password);
+        String email = auth.getName();
+        return ResponseEntity.ok(Map.of("email", email));
     }
 }
