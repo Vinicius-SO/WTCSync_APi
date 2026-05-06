@@ -3,6 +3,8 @@ package com.fiap.WtcSync.application.dtos;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.Map;
+
 @Schema(description = "Request payload to send a message")
 public record MessageDTO(
         @Schema(description = "ID of the sender", example = "user123", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -15,5 +17,8 @@ public record MessageDTO(
 
         @Schema(description = "Message text content", example = "Hello, how can I help you?", requiredMode = Schema.RequiredMode.REQUIRED)
         @NotBlank
-        String text
+        String text,
+
+        @Schema(description = "URLs de ação para botões da mensagem", example = "{\"btn1\": \"wtcapp://events/123\"}")
+        Map<String, String> actionUrls
 ) {}

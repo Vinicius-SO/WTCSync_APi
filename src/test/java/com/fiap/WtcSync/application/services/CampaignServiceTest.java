@@ -34,6 +34,9 @@ class CampaignServiceTest {
     @Mock
     private AuditLogService auditLogService;
 
+    @Mock
+    private DeeplinkValidator deeplinkValidator;
+
     @InjectMocks
     private CampaignService campaignService;
 

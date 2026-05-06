@@ -13,13 +13,17 @@ import java.util.List;
 public class MessageService {
 
     private final IMessageRepository messageRepository;
+    private final DeeplinkValidator deeplinkValidator;
 
-    public MessageService(IMessageRepository messageRepository) {
+    public MessageService(IMessageRepository messageRepository, DeeplinkValidator deeplinkValidator) {
         this.messageRepository = messageRepository;
+        this.deeplinkValidator = deeplinkValidator;
     }
 
     public MessageResponseDTO sendMessage(MessageDTO dto) {
+        deeplinkValidator.validateActionUrls(dto.actionUrls());
         Message message = new Message(dto.senderId(), dto.customerId(), dto.text(), MessageStatus.ENVIADO);
+        message.setActionUrls(dto.actionUrls());
         return toResponseDTO(messageRepository.save(message));
     }
 
@@ -48,6 +52,7 @@ public class MessageService {
                 message.getCustomerId(),
                 message.getText(),
                 message.getStatus(),
+                message.getActionUrls(),
                 message.getCreatedAt(),
                 message.getUpdatedAt()
         );

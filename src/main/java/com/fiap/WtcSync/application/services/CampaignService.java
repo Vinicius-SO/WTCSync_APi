@@ -20,11 +20,13 @@ public class CampaignService {
     private final ICampaignRepository campaignRepository;
     private final ISegmentRepository segmentRepository;
     private final AuditLogService auditLogService;
+    private final DeeplinkValidator deeplinkValidator;
 
-    public CampaignService(ICampaignRepository campaignRepository, ISegmentRepository segmentRepository, AuditLogService auditLogService) {
+    public CampaignService(ICampaignRepository campaignRepository, ISegmentRepository segmentRepository, AuditLogService auditLogService, DeeplinkValidator deeplinkValidator) {
         this.campaignRepository = campaignRepository;
         this.segmentRepository = segmentRepository;
         this.auditLogService = auditLogService;
+        this.deeplinkValidator = deeplinkValidator;
     }
 
     public List<CampaignResponseDTO> listCampaigns() {
@@ -39,6 +41,8 @@ public class CampaignService {
 
     public CampaignResponseDTO createCampaign(CampaignRequestDTO dto, String performedBy) {
         validateRequiredFields(dto);
+        deeplinkValidator.validateDeeplink(dto.deeplink());
+        deeplinkValidator.validateActionUrls(dto.actionUrls());
 
         Optional<Segment> segment = segmentRepository.findById(dto.segmentId());
         if (segment.isEmpty()) {

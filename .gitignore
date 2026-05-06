@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+
+SESSION_LOG.md
