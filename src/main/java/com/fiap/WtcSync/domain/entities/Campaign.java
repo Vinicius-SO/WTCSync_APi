@@ -25,6 +25,7 @@ public class Campaign {
     private Map<String, String> actionUrls;
     private CampaignStats stats;
     private String createdBy;
+    private LocalDateTime scheduledAt;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -60,6 +61,8 @@ public class Campaign {
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+    public LocalDateTime getScheduledAt() { return scheduledAt; }
+    public void setScheduledAt(LocalDateTime scheduledAt) { this.scheduledAt = scheduledAt; }
 
     public static class CampaignAction {
         private String action;
