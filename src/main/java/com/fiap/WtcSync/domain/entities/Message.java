@@ -6,6 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Document(collection = "messages")
 public class Message {
@@ -16,6 +17,7 @@ public class Message {
     private String customerId;
     private String text;
     private MessageStatus status;
+    private Map<String, String> actionUrls;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -46,6 +48,9 @@ public class Message {
 
     public MessageStatus getStatus() { return status; }
     public void setStatus(MessageStatus status) { this.status = status; }
+
+    public Map<String, String> getActionUrls() { return actionUrls; }
+    public void setActionUrls(Map<String, String> actionUrls) { this.actionUrls = actionUrls; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

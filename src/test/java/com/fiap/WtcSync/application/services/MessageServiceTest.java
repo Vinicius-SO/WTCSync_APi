@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,6 +25,9 @@ class MessageServiceTest {
 
     @Mock
     private IMessageRepository messageRepository;
+
+    @Mock
+    private DeeplinkValidator deeplinkValidator;
 
     @InjectMocks
     private MessageService messageService;
@@ -38,7 +42,7 @@ class MessageServiceTest {
 
     @Test
     void sendMessage_shouldPersistMessageWithEnviadoStatus() {
-        MessageDTO dto = new MessageDTO("sender1", "customer1", "Hello!");
+        MessageDTO dto = new MessageDTO("sender1", "customer1", "Hello!", null);
         Message saved = buildMessage("msg-1", "sender1", "customer1", "Hello!", MessageStatus.ENVIADO);
 
         when(messageRepository.save(any(Message.class))).thenReturn(saved);
@@ -52,6 +56,35 @@ class MessageServiceTest {
         assertEquals("Hello!", result.text());
         assertEquals(MessageStatus.ENVIADO, result.status());
         verify(messageRepository).save(any(Message.class));
+    }
+
+    @Test
+    void sendMessage_withValidActionUrls_shouldPersistAndReturn() {
+        Map<String, String> actionUrls = Map.of("btn1", "wtcapp://events/evt-1");
+        MessageDTO dto = new MessageDTO("sender1", "customer1", "Hello!", actionUrls);
+        Message saved = buildMessage("msg-1", "sender1", "customer1", "Hello!", MessageStatus.ENVIADO);
+        saved.setActionUrls(actionUrls);
+
+        when(messageRepository.save(any(Message.class))).thenReturn(saved);
+
+        MessageResponseDTO result = messageService.sendMessage(dto);
+
+        assertNotNull(result);
+        assertEquals("msg-1", result.id());
+        assertNotNull(result.actionUrls());
+        verify(messageRepository).save(any(Message.class));
+    }
+
+    @Test
+    void sendMessage_withInvalidDeeplink_shouldThrowAndNotPersist() {
+        Map<String, String> actionUrls = Map.of("btn1", "wtcapp://invalid/route");
+        MessageDTO dto = new MessageDTO("sender1", "customer1", "Hello!", actionUrls);
+
+        doThrow(new IllegalArgumentException("Deeplink inválido: rota não reconhecida — wtcapp://invalid/route"))
+                .when(deeplinkValidator).validateActionUrls(any());
+
+        assertThrows(IllegalArgumentException.class, () -> messageService.sendMessage(dto));
+        verify(messageRepository, never()).save(any());
     }
 
     @Test

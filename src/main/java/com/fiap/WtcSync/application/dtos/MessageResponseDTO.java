@@ -4,6 +4,7 @@ import com.fiap.WtcSync.domain.entities.MessageStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Schema(description = "Response payload for a message")
 public record MessageResponseDTO(
@@ -21,6 +22,9 @@ public record MessageResponseDTO(
 
         @Schema(description = "Message delivery status", example = "ENVIADO")
         MessageStatus status,
+
+        @Schema(description = "URLs de ação para botões da mensagem")
+        Map<String, String> actionUrls,
 
         @Schema(description = "Message creation timestamp")
         LocalDateTime createdAt,
