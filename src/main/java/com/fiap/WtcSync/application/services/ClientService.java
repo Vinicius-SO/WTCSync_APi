@@ -1,9 +1,12 @@
 package com.fiap.WtcSync.application.services;
 
+import com.fiap.WtcSync.application.dtos.ClientProfileDTO;
 import com.fiap.WtcSync.application.dtos.ClientRequestDTO;
 import com.fiap.WtcSync.application.dtos.ClientResponseDTO;
+import com.fiap.WtcSync.application.dtos.MessageResponseDTO;
 import com.fiap.WtcSync.domain.entities.Client;
 import com.fiap.WtcSync.domain.interfaces.IClientRepository;
+import com.fiap.WtcSync.domain.interfaces.IMessageRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +16,12 @@ import java.util.Optional;
 public class ClientService {
 
     private final IClientRepository clientRepository;
+    private final IMessageRepository messageRepository;
     private final AuditLogService auditLogService;
 
-    public ClientService(IClientRepository clientRepository, AuditLogService auditLogService) {
+    public ClientService(IClientRepository clientRepository, IMessageRepository messageRepository, AuditLogService auditLogService) {
         this.clientRepository = clientRepository;
+        this.messageRepository = messageRepository;
         this.auditLogService = auditLogService;
     }
 
@@ -50,6 +55,25 @@ public class ClientService {
                 "Cliente criado: " + saved.getName());
 
         return toResponse(saved);
+    }
+
+    public Optional<ClientProfileDTO> getProfile(String clientId) {
+        return clientRepository.findById(clientId).map(client -> {
+            ClientResponseDTO clientDTO = toResponse(client);
+
+            List<MessageResponseDTO> lastMessages = messageRepository
+                    .findByCustomerId(clientId)
+                    .stream()
+                    .sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()))
+                    .limit(5)
+                    .map(m -> new MessageResponseDTO(
+                            m.getId(), m.getSenderId(), m.getCustomerId(),
+                            m.getText(), m.getStatus(), m.getActionUrls(),
+                            m.getCreatedAt(), m.getUpdatedAt()))
+                    .toList();
+
+            return new ClientProfileDTO(clientDTO, lastMessages, List.of());
+        });
     }
 
     private ClientResponseDTO toResponse(Client client) {
