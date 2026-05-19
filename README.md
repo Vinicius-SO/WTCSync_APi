@@ -2,6 +2,14 @@
 
 Plataforma integrada de CRM e mensageria desenvolvida para o **World Trade Center Business Club São Paulo** em parceria com a **FIAP**. O sistema une gestão de relacionamento com disparo de comunicações personalizadas via app mobile.
 
+## Equipe
+
+| Nome | RM |
+|---|---|
+| Vinicius Soares Oliveira | 560208 |
+| Hobert Kawan Silva Leal | 559641 |
+| Cauã Luz | 560488 |
+
 ## Sobre o Projeto
 
 O WTC CRM nasceu de um problema real: o World Trade Center Business Club São Paulo precisava de uma forma melhor de falar com seus clientes. E-mail marketing genérico não funciona para uma base de CEOs, VPs e diretores que esperam um nível de personalização acima da média. Ferramentas avulsas de WhatsApp ou push notification não se integram ao histórico do cliente. O resultado era um relacionamento fragmentado, sem rastreabilidade e difícil de escalar.
@@ -25,7 +33,7 @@ A solução é uma plataforma que une CRM e mensageria num sistema só. O operad
 │                   App Mobile (Cliente)              │
 │  Chat, Histórico, Campanhas, Botões de Ação        │
 └──────────────────────┬──────────────────────────────┘
-                       │ REST API + WebSocket
+│ REST API + WebSocket
 ┌──────────────────────┴──────────────────────────────┐
 │              Backend Java (Operador)                │
 │  CRM, Segmentação, Campanhas, Chat, Auditoria     │
@@ -98,23 +106,23 @@ A solução é uma plataforma que une CRM e mensageria num sistema só. O operad
 - `GET /api/clients` - Lista clientes com filtros (tag, score, status, segmento)
 - `GET /api/clients/{id}` - Detalhes do cliente
 - `POST /api/clients` - Criar cliente
-- `PUT /api/clients/{id}` - Atualizar cliente
-- `GET /api/clients/{id}/history` - Histórico 360° do cliente
+- `GET /api/clients/{id}/profile` - Perfil 360° do cliente
 
 ### Segmentos
 - `GET /api/segments` - Lista segmentos
 - `POST /api/segments` - Criar segmento
 - `GET /api/segments/{id}/clients` - Clientes no segmento
 
-### Chat
-- `GET /api/chat/{clientId}` - Histórico de chat
-- `POST /api/chat/{clientId}/message` - Enviar mensagem
-- `WebSocket /ws/chat` - Atualizações em tempo real
+### Mensagens
+- `POST /messages` - Enviar mensagem
+- `GET /messages/{id}` - Buscar mensagem por ID
+- `GET /inbox/{customerId}` - Inbox do cliente
+- `PATCH /messages/{id}/status` - Atualizar status (ENVIADO, ENTREGUE, LIDO, FALHA)
 
-### Campanhas
-- `GET /api/campaigns` - Lista campanhas
-- `POST /api/campaigns` - Criar e disparar campanha
-- `GET /api/campaigns/{id}/stats` - Estatísticas da campanha
+### Auditoria
+- `GET /api/audit` - Listar todos os logs
+- `GET /api/audit/entity/{entity}` - Logs por entidade
+- `GET /api/audit/user/{email}` - Logs por usuário
 
 ## Como Rodar
 
@@ -191,7 +199,6 @@ src/
 │   │   │   ├── entities/   # User, Client, Segment, Campaign, Message
 │   │   │   └── interfaces/ # Repository interfaces
 │   │   ├── application/    # Casos de uso e serviços
-│   │   │   ├── usecases/   # Casos de uso
 │   │   │   ├── dtos/       # Data Transfer Objects
 │   │   │   └── services/   # Application services (Token, FCM, WebSocket)
 │   │   ├── infrastructure/ # Implementações externas
@@ -201,7 +208,7 @@ src/
 │   │       └── controllers/ # REST controllers
 │   └── resources/       # Configurações
 └── test/
-    └── java/             # Testes
+└── java/             # Testes
 ```
 
 ## Repositório

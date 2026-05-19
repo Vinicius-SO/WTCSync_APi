@@ -20,6 +20,11 @@ public class AuditLogService {
         auditLogRepository.save(auditLog);
     }
 
+    public void logError(String action, String entityId, String performedBy, String errorMessage) {
+        AuditLog auditLog = new AuditLog(action, "ERROR", entityId, performedBy, errorMessage);
+        auditLogRepository.save(auditLog);
+    }
+
     public List<AuditLog> listAll() {
         return auditLogRepository.findAll();
     }

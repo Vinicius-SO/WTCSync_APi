@@ -1,5 +1,6 @@
 package com.fiap.WtcSync.presentation.controllers;
 
+import com.fiap.WtcSync.application.dtos.ClientProfileDTO;
 import com.fiap.WtcSync.application.dtos.ClientRequestDTO;
 import com.fiap.WtcSync.application.dtos.ClientResponseDTO;
 import com.fiap.WtcSync.application.services.ClientService;
@@ -46,6 +47,18 @@ public class ClientController {
     })
     public ResponseEntity<ClientResponseDTO> getClient(@PathVariable String id) {
         return clientService.getById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/profile")
+    @Operation(summary = "Perfil 360° do cliente", description = "Retorna dados básicos, últimas mensagens e tarefas abertas")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Perfil retornado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
+    })
+    public ResponseEntity<ClientProfileDTO> getProfile(@PathVariable String id) {
+        return clientService.getProfile(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
