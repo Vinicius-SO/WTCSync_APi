@@ -1,6 +1,7 @@
 package com.fiap.WtcSync.application.dtos;
 
 import com.fiap.WtcSync.domain.entities.Campaign;
+import com.fiap.WtcSync.domain.enums.CampaignStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ public record CampaignResponseDTO(
     String title,
     String body,
     String segmentId,
-    String status,
+    CampaignStatus status,
     String mediaUrl,
     String deeplink,
     List<Campaign.CampaignAction> actions,
@@ -21,5 +22,6 @@ public record CampaignResponseDTO(
     Campaign.CampaignStats stats,
     String createdBy,
     LocalDateTime createdAt,
-    LocalDateTime updatedAt
+    LocalDateTime updatedAt,
+    LocalDateTime scheduledAt
 ) {}

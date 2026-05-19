@@ -1,0 +1,119 @@
+- generic [ref=e3]:
+  - generic [ref=e6]:
+    - img [ref=e8]
+    - generic [ref=e43]:
+      - textbox [ref=e44]: /v3/api-docs
+      - button "Explore" [ref=e45] [cursor=pointer]
+  - generic [ref=e46]:
+    - generic:
+      - img
+    - generic [ref=e47]:
+      - generic [ref=e50]:
+        - generic [ref=e51]:
+          - heading "WtcSync API 1.0 OAS 3.1" [level=2] [ref=e52]:
+            - text: WtcSync API
+            - generic [ref=e53]:
+              - generic [ref=e55]: "1.0"
+              - generic [ref=e57]: OAS 3.1
+          - link "/v3/api-docs" [ref=e58] [cursor=pointer]:
+            - /url: /v3/api-docs
+            - generic [ref=e59]: /v3/api-docs
+        - paragraph [ref=e62]: API para gestão de sincronização
+      - generic [ref=e64]:
+        - generic [ref=e66]:
+          - text: Servers
+          - combobox [ref=e69]:
+            - option "http://localhost:8080 - Generated server url" [selected]
+        - button "Authorize" [ref=e71] [cursor=pointer]:
+          - generic [ref=e72]: Authorize
+          - img [ref=e73]
+      - generic [ref=e79]:
+        - heading "Authentication Authentication endpoints Collapse operation" [level=3] [ref=e80] [cursor=pointer]:
+          - link "Authentication" [ref=e81]:
+            - /url: "#/Authentication"
+          - paragraph [ref=e84]: Authentication endpoints
+          - button "Collapse operation" [expanded] [ref=e85]:
+            - img [ref=e86]
+        - generic [ref=e89]:
+          - generic [ref=e92] [cursor=pointer]:
+            - button "POST /api/auth/register Register user" [ref=e93]:
+              - generic [ref=e94]: POST
+              - generic [ref=e95]:
+                - link "/api/auth/register" [ref=e97]:
+                  - /url: "#/Authentication/register"
+                  - generic [ref=e98]:
+                    - text: /api
+                    - text: /auth
+                    - text: /register
+                - generic [ref=e99]: Register user
+            - generic "Copy to clipboard"
+            - button "authorization button unlocked" [ref=e102]:
+              - img [ref=e103]
+            - button "post /api/auth/register" [ref=e105]:
+              - img [ref=e106]
+          - generic [ref=e110] [cursor=pointer]:
+            - button "POST /api/auth/login User login" [ref=e111]:
+              - generic [ref=e112]: POST
+              - generic [ref=e113]:
+                - link "/api/auth/login" [ref=e115]:
+                  - /url: "#/Authentication/login"
+                  - generic [ref=e116]:
+                    - text: /api
+                    - text: /auth
+                    - text: /login
+                - generic [ref=e117]: User login
+            - generic "Copy to clipboard"
+            - button "authorization button unlocked" [ref=e120]:
+              - img [ref=e121]
+            - button "post /api/auth/login" [ref=e123]:
+              - img [ref=e124]
+          - generic [ref=e128] [cursor=pointer]:
+            - button "GET /api/auth/me Get current user" [ref=e129]:
+              - generic [ref=e130]: GET
+              - generic [ref=e131]:
+                - link "/api/auth/me" [ref=e133]:
+                  - /url: "#/Authentication/getCurrentUser"
+                  - generic [ref=e134]:
+                    - text: /api
+                    - text: /auth
+                    - text: /me
+                - generic [ref=e135]: Get current user
+            - generic "Copy to clipboard"
+            - button "authorization button unlocked" [ref=e138]:
+              - img [ref=e139]
+            - button "get /api/auth/me" [ref=e141]:
+              - img [ref=e142]
+      - generic [ref=e146]:
+        - heading "Schemas" [level=4] [ref=e147] [cursor=pointer]:
+          - button "Schemas" [expanded] [ref=e148]:
+            - generic [ref=e149]: Schemas
+            - img [ref=e150]
+        - generic [ref=e152]:
+          - article [ref=e153]:
+            - generic [ref=e154]:
+              - button "UsuarioRequestDTO" [ref=e155] [cursor=pointer]:
+                - generic [ref=e157]: UsuarioRequestDTO
+                - img [ref=e159]
+              - button "Expand all" [ref=e161] [cursor=pointer]
+              - strong [ref=e162]: object
+          - article [ref=e163]:
+            - generic [ref=e164]:
+              - button "UsuarioResponseDTO" [ref=e165] [cursor=pointer]:
+                - generic [ref=e167]: UsuarioResponseDTO
+                - img [ref=e169]
+              - button "Expand all" [ref=e171] [cursor=pointer]
+              - strong [ref=e172]: object
+          - article [ref=e173]:
+            - generic [ref=e174]:
+              - button "AuthRequestDTO" [ref=e175] [cursor=pointer]:
+                - generic [ref=e177]: AuthRequestDTO
+                - img [ref=e179]
+              - button "Expand all" [ref=e181] [cursor=pointer]
+              - strong [ref=e182]: object
+          - article [ref=e183]:
+            - generic [ref=e184]:
+              - button "AuthResponseDTO" [ref=e185] [cursor=pointer]:
+                - generic [ref=e187]: AuthResponseDTO
+                - img [ref=e189]
+              - button "Expand all" [ref=e191] [cursor=pointer]
+              - strong [ref=e192]: object

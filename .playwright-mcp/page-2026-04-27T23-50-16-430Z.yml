@@ -1,0 +1,51 @@
+- generic [ref=e3]:
+  - generic [ref=e6]:
+    - img [ref=e8]
+    - generic [ref=e43]:
+      - textbox [ref=e44]: /v3/api-docs
+      - button "Explore" [ref=e45] [cursor=pointer]
+  - generic [ref=e46]:
+    - generic:
+      - img
+    - generic [ref=e47]:
+      - generic [ref=e50]:
+        - generic [ref=e51]:
+          - heading "WtcSync API 1.0 OAS 3.1" [level=2] [ref=e52]:
+            - text: WtcSync API
+            - generic [ref=e53]:
+              - generic [ref=e55]: "1.0"
+              - generic [ref=e57]: OAS 3.1
+          - link "/v3/api-docs" [ref=e58] [cursor=pointer]:
+            - /url: /v3/api-docs
+            - generic [ref=e59]: /v3/api-docs
+        - paragraph [ref=e62]: API para gestão de sincronização
+      - generic [ref=e66]:
+        - text: Servers
+        - combobox [ref=e69]:
+          - option "http://localhost:8080 - Generated server url" [selected]
+      - heading "Authentication Authentication endpoints Expand operation" [level=3] [ref=e144] [cursor=pointer]:
+        - link "Authentication" [ref=e76]:
+          - /url: "#/Authentication"
+        - paragraph [ref=e79]: Authentication endpoints
+        - button "Expand operation" [ref=e145]:
+          - img [ref=e146]
+      - generic [ref=e117]:
+        - heading "Schemas" [level=4] [ref=e118] [cursor=pointer]:
+          - button "Schemas" [expanded] [ref=e119]:
+            - generic [ref=e120]: Schemas
+            - img [ref=e121]
+        - generic [ref=e123]:
+          - article [ref=e124]:
+            - generic [ref=e125]:
+              - button "AuthRequestDTO" [ref=e126] [cursor=pointer]:
+                - generic [ref=e128]: AuthRequestDTO
+                - img [ref=e130]
+              - button "Expand all" [ref=e132] [cursor=pointer]
+              - strong [ref=e133]: object
+          - article [ref=e134]:
+            - generic [ref=e135]:
+              - button "AuthResponseDTO" [ref=e136] [cursor=pointer]:
+                - generic [ref=e138]: AuthResponseDTO
+                - img [ref=e140]
+              - button "Expand all" [ref=e142] [cursor=pointer]
+              - strong [ref=e143]: object

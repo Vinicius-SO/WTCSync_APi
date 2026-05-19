@@ -1,0 +1,492 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------------------< com.fiap:WtcSync >--------------------------
+[INFO] Building  0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:4.0.6:run (default-cli) > test-compile @ WtcSync >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ WtcSync ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ WtcSync ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ WtcSync ---
+[INFO] skip non existing resourceDirectory C:\Users\vhiso\OneDrive\�rea de Trabalho\faculdade\WtcSync\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ WtcSync ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< spring-boot:4.0.6:run (default-cli) < test-compile @ WtcSync <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:4.0.6:run (default-cli) @ WtcSync ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.6)
+
+2026-04-28T21:13:03.969-03:00  INFO 26060 --- [WtcSync] [           main] com.fiap.WtcSync.WtcSyncApplication      : Starting WtcSyncApplication using Java 21.0.7 with PID 26060 (C:\Users\vhiso\OneDrive\Área de Trabalho\faculdade\WtcSync\target\classes started by vhiso in C:\Users\vhiso\OneDrive\Área de Trabalho\faculdade\WtcSync)
+2026-04-28T21:13:03.969-03:00  INFO 26060 --- [WtcSync] [           main] com.fiap.WtcSync.WtcSyncApplication      : No active profile set, falling back to 1 default profile: "default"
+2026-04-28T21:13:04.429-03:00  INFO 26060 --- [WtcSync] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2026-04-28T21:13:04.429-03:00  INFO 26060 --- [WtcSync] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 3 ms. Found 0 MongoDB repository interfaces.
+2026-04-28T21:13:05.015-03:00  INFO 26060 --- [WtcSync] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-28T21:13:05.047-03:00  INFO 26060 --- [WtcSync] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-28T21:13:05.047-03:00  INFO 26060 --- [WtcSync] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.21]
+2026-04-28T21:13:05.130-03:00  INFO 26060 --- [WtcSync] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1133 ms
+2026-04-28T21:13:05.403-03:00  INFO 26060 --- [WtcSync] [           main] org.mongodb.driver.client                : MongoClient with metadata {"application": {"name": "Cluster0"}, "driver": {"name": "mongo-java-driver|sync", "version": "5.6.5"}, "os": {"type": "Windows", "name": "Windows 11", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Oracle Corporation/21.0.7+8-LTS-245"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=MongoCredential{mechanism=null, userName='vhisoares39_db_user', source='admin', password=<hidden>, mechanismProperties=<hidden>}, transportSettings=null, commandListeners=[], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, com.mongodb.client.model.mql.ExpressionCodecProvider@552cede7, com.mongodb.Jep395RecordCodecProvider@1b7f06c7, com.mongodb.KotlinCodecProvider@151732fb, EnumCodecProvider{}]}, loggerSettings=LoggerSettings{maxDocumentLength=1000}, clusterSettings={hosts=[127.0.0.1:27017], srvHost=cluster0.wx4tjw1.mongodb.net, srvServiceName=mongodb, mode=MULTIPLE, requiredClusterType=REPLICA_SET, requiredReplicaSetName='atlas-k4ug34-shard-0', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='15 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, proxySettings=ProxySettings{host=null, port=null, username=null, password=null}}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverMonitoringMode=AUTO, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=true, invalidHostNameAllowed=false, context=null}, applicationName='Cluster0', compressorList=[], uuidRepresentation=UNSPECIFIED, serverApi=null, autoEncryptionSettings=null, dnsClient=null, inetAddressResolver=null, contextProvider=null, timeoutMS=null}
+2026-04-28T21:13:05.410-03:00  INFO 26060 --- [WtcSync] [jw1.mongodb.net] org.mongodb.driver.cluster               : Adding discovered server ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017 to client view of cluster
+2026-04-28T21:13:05.432-03:00  INFO 26060 --- [WtcSync] [jw1.mongodb.net] org.mongodb.driver.cluster               : Adding discovered server ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017 to client view of cluster
+2026-04-28T21:13:05.432-03:00  INFO 26060 --- [WtcSync] [jw1.mongodb.net] org.mongodb.driver.cluster               : Adding discovered server ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017 to client view of cluster
+2026-04-28T21:13:05.879-03:00  WARN 26060 --- [WtcSync] [           main] .s.a.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 51251e5f-58fe-459d-8af7-eb4b95a4e0b3
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-04-28T21:13:05.880-03:00  INFO 26060 --- [WtcSync] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-04-28T21:13:05.900-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, type=REPLICA_SET_SECONDARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=242520900, minRoundTripTimeNanos=0, setName='atlas-k4ug34-shard-0', canonicalAddress=ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, hosts=[ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017], passives=[], arbiters=[], primary='ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='sae1-az2'}, Tag{name='cacheState', value='READY'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='SA_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=34, topologyVersion=TopologyVersion{processId=69e7ade3a1b0cef28177b2ae, counter=3}, lastWriteDate=Tue Apr 28 21:13:03 BRT 2026, lastUpdateTimeNanos=693905539626100}
+2026-04-28T21:13:05.900-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017, type=REPLICA_SET_SECONDARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=243283700, minRoundTripTimeNanos=0, setName='atlas-k4ug34-shard-0', canonicalAddress=ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017, hosts=[ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017], passives=[], arbiters=[], primary='ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='sae1-az1'}, Tag{name='cacheState', value='READY'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='SA_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=34, topologyVersion=TopologyVersion{processId=69e7ad8089d3946611002f8e, counter=4}, lastWriteDate=Tue Apr 28 21:13:03 BRT 2026, lastUpdateTimeNanos=693905539626200}
+2026-04-28T21:13:05.900-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, type=REPLICA_SET_PRIMARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=243275400, minRoundTripTimeNanos=0, setName='atlas-k4ug34-shard-0', canonicalAddress=ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, hosts=[ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017], passives=[], arbiters=[], primary='ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='sae1-az3'}, Tag{name='cacheState', value='READY'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='SA_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff00000000000000cf, setVersion=34, topologyVersion=TopologyVersion{processId=69e7adb22645b639d2959592, counter=6}, lastWriteDate=Tue Apr 28 21:13:03 BRT 2026, lastUpdateTimeNanos=693905539626200}
+2026-04-28T21:13:05.900-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Discovered replica set primary ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017 with max election id 7fffffff00000000000000cf and max set version 34
+2026-04-28T21:13:06.032-03:00  INFO 26060 --- [WtcSync] [           main] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2026-04-28T21:13:06.521-03:00  INFO 26060 --- [WtcSync] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-28T21:13:06.537-03:00  INFO 26060 --- [WtcSync] [           main] com.fiap.WtcSync.WtcSyncApplication      : Started WtcSyncApplication in 2.957 seconds (process running for 3.279)
+2026-04-28T21:13:34.937-03:00  INFO 26060 --- [WtcSync] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-28T21:13:34.937-03:00  INFO 26060 --- [WtcSync] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-28T21:13:34.938-03:00  INFO 26060 --- [WtcSync] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-04-28T21:13:45.121-03:00  INFO 26060 --- [WtcSync] [nio-8080-exec-5] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 247 ms
+2026-04-28T22:26:09.384-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.doHeartbeat(DefaultServerMonitor.java:311) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:262) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796) ~[na:na]
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 5 common frames omitted
+
+2026-04-28T22:26:14.049-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017, type=REPLICA_SET_SECONDARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=910711500, minRoundTripTimeNanos=0, setName='atlas-k4ug34-shard-0', canonicalAddress=ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017, hosts=[ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017], passives=[], arbiters=[], primary='ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='sae1-az1'}, Tag{name='cacheState', value='READY'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='SA_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=34, topologyVersion=TopologyVersion{processId=69e7ad8089d3946611002f8e, counter=4}, lastWriteDate=Tue Apr 28 22:26:11 BRT 2026, lastUpdateTimeNanos=698293688101700}
+2026-04-28T22:26:39.119-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.doHeartbeat(DefaultServerMonitor.java:311) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:262) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796) ~[na:na]
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 5 common frames omitted
+
+2026-04-28T22:26:39.423-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.doHeartbeat(DefaultServerMonitor.java:311) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:262) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796) ~[na:na]
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 5 common frames omitted
+
+2026-04-28T22:26:50.169-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketOpenException: Exception opening socket
+	at com.mongodb.internal.connection.SocketStream.lambda$open$0(SocketStream.java:85) ~[mongodb-driver-core-5.6.5.jar:na]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:85) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:233) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.setupNewConnectionAndGetInitialDescription(DefaultServerMonitor.java:282) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:253) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Connect timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:546) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592) ~[na:na]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[na:na]
+	at java.base/java.net.Socket.connect(Socket.java:751) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:304) ~[na:na]
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:76) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.SocketStream.initializeSocket(SocketStream.java:104) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:79) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 4 common frames omitted
+
+2026-04-28T22:26:54.817-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.doHeartbeat(DefaultServerMonitor.java:311) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:262) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796) ~[na:na]
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 5 common frames omitted
+
+2026-04-28T22:27:00.198-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketOpenException: Exception opening socket
+	at com.mongodb.internal.connection.SocketStream.lambda$open$0(SocketStream.java:85) ~[mongodb-driver-core-5.6.5.jar:na]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:85) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:233) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.setupNewConnectionAndGetInitialDescription(DefaultServerMonitor.java:282) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:253) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Connect timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:546) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592) ~[na:na]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[na:na]
+	at java.base/java.net.Socket.connect(Socket.java:751) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:304) ~[na:na]
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:76) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.SocketStream.initializeSocket(SocketStream.java:104) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:79) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 4 common frames omitted
+
+2026-04-28T22:27:08.484-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketOpenException: Exception opening socket
+	at com.mongodb.internal.connection.SocketStream.lambda$open$0(SocketStream.java:85) ~[mongodb-driver-core-5.6.5.jar:na]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:85) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:233) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.setupNewConnectionAndGetInitialDescription(DefaultServerMonitor.java:282) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:253) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Connect timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:546) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592) ~[na:na]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[na:na]
+	at java.base/java.net.Socket.connect(Socket.java:751) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:304) ~[na:na]
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:76) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.SocketStream.initializeSocket(SocketStream.java:104) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:79) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 4 common frames omitted
+
+2026-04-28T22:27:48.341-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, type=REPLICA_SET_SECONDARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=4558509300, minRoundTripTimeNanos=0, setName='atlas-k4ug34-shard-0', canonicalAddress=ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, hosts=[ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017], passives=[], arbiters=[], primary='ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='sae1-az2'}, Tag{name='cacheState', value='READY'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='SA_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=34, topologyVersion=TopologyVersion{processId=69e7ade3a1b0cef28177b2ae, counter=3}, lastWriteDate=Tue Apr 28 22:27:46 BRT 2026, lastUpdateTimeNanos=698387984564400}
+2026-04-28T22:27:48.962-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017, type=REPLICA_SET_SECONDARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=132423500, minRoundTripTimeNanos=0, setName='atlas-k4ug34-shard-0', canonicalAddress=ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017, hosts=[ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017], passives=[], arbiters=[], primary='ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='sae1-az1'}, Tag{name='cacheState', value='READY'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='SA_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=34, topologyVersion=TopologyVersion{processId=69e7ad8089d3946611002f8e, counter=4}, lastWriteDate=Tue Apr 28 22:27:46 BRT 2026, lastUpdateTimeNanos=698388612521600}
+2026-04-28T22:27:50.349-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, type=REPLICA_SET_PRIMARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=95025000, minRoundTripTimeNanos=0, setName='atlas-k4ug34-shard-0', canonicalAddress=ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, hosts=[ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017], passives=[], arbiters=[], primary='ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='sae1-az3'}, Tag{name='cacheState', value='READY'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='SA_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff00000000000000cf, setVersion=34, topologyVersion=TopologyVersion{processId=69e7adb22645b639d2959592, counter=6}, lastWriteDate=Tue Apr 28 22:27:48 BRT 2026, lastUpdateTimeNanos=698390007095800}
+2026-04-28T22:27:50.365-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Discovered replica set primary ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017 with max election id 7fffffff00000000000000cf and max set version 34
+2026-04-28T22:28:40.439-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.doHeartbeat(DefaultServerMonitor.java:311) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:262) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796) ~[na:na]
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 5 common frames omitted
+
+2026-04-28T22:28:51.017-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketWriteException: Exception sending message
+	at com.mongodb.internal.connection.InternalStreamConnection.throwTranslatedWriteException(InternalStreamConnection.java:785) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.sendMessage(InternalStreamConnection.java:670) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.trySendMessage(InternalStreamConnection.java:507) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.sendCommandMessage(InternalStreamConnection.java:482) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.sendAndReceiveInternal(InternalStreamConnection.java:440) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.lambda$sendAndReceive$0(InternalStreamConnection.java:375) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.sendAndReceive(InternalStreamConnection.java:378) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.CommandHelper.sendAndReceive(CommandHelper.java:98) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.CommandHelper.executeCommand(CommandHelper.java:47) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.initializeConnectionDescription(InternalStreamConnectionInitializer.java:144) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.startHandshake(InternalStreamConnectionInitializer.java:78) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:235) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.setupNewConnectionAndGetInitialDescription(DefaultServerMonitor.java:282) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:253) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796) ~[na:na]
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.decode(SSLSocketInputRecord.java:160) ~[na:na]
+	at java.base/sun.security.ssl.SSLTransport.decode(SSLTransport.java:111) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.decode(SSLSocketImpl.java:1506) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.readHandshakeRecord(SSLSocketImpl.java:1421) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:455) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.ensureNegotiated(SSLSocketImpl.java:922) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl$AppOutputStream.write(SSLSocketImpl.java:1291) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.write(SocketStream.java:165) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.sendMessage(InternalStreamConnection.java:667) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 13 common frames omitted
+
+2026-04-28T22:29:01.075-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, type=REPLICA_SET_PRIMARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=33382000, minRoundTripTimeNanos=0, setName='atlas-k4ug34-shard-0', canonicalAddress=ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, hosts=[ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017], passives=[], arbiters=[], primary='ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='sae1-az3'}, Tag{name='cacheState', value='READY'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='SA_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff00000000000000cf, setVersion=34, topologyVersion=TopologyVersion{processId=69e7adb22645b639d2959592, counter=6}, lastWriteDate=Tue Apr 28 22:28:59 BRT 2026, lastUpdateTimeNanos=698460716866200}
+2026-04-28T22:29:01.075-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Discovered replica set primary ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017 with max election id 7fffffff00000000000000cf and max set version 34
+2026-04-28T22:56:39.770-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.doHeartbeat(DefaultServerMonitor.java:311) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:262) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796) ~[na:na]
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 5 common frames omitted
+
+2026-04-28T22:56:41.833-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, type=REPLICA_SET_SECONDARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=525821400, minRoundTripTimeNanos=0, setName='atlas-k4ug34-shard-0', canonicalAddress=ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, hosts=[ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017], passives=[], arbiters=[], primary='ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='sae1-az2'}, Tag{name='cacheState', value='READY'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='SA_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=34, topologyVersion=TopologyVersion{processId=69e7ade3a1b0cef28177b2ae, counter=3}, lastWriteDate=Tue Apr 28 22:56:40 BRT 2026, lastUpdateTimeNanos=700121469033900}
+2026-04-28T23:15:43.996-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.doHeartbeat(DefaultServerMonitor.java:311) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:262) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796) ~[na:na]
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 5 common frames omitted
+
+2026-04-28T23:15:56.594-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketWriteException: Exception sending message
+	at com.mongodb.internal.connection.InternalStreamConnection.throwTranslatedWriteException(InternalStreamConnection.java:785) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.sendMessage(InternalStreamConnection.java:670) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.trySendMessage(InternalStreamConnection.java:507) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.sendCommandMessage(InternalStreamConnection.java:482) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.sendAndReceiveInternal(InternalStreamConnection.java:440) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.lambda$sendAndReceive$0(InternalStreamConnection.java:375) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.sendAndReceive(InternalStreamConnection.java:378) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.CommandHelper.sendAndReceive(CommandHelper.java:98) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.CommandHelper.executeCommand(CommandHelper.java:47) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.initializeConnectionDescription(InternalStreamConnectionInitializer.java:144) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnectionInitializer.startHandshake(InternalStreamConnectionInitializer.java:78) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:235) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.setupNewConnectionAndGetInitialDescription(DefaultServerMonitor.java:282) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:253) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796) ~[na:na]
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.decode(SSLSocketInputRecord.java:160) ~[na:na]
+	at java.base/sun.security.ssl.SSLTransport.decode(SSLTransport.java:111) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.decode(SSLSocketImpl.java:1506) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.readHandshakeRecord(SSLSocketImpl.java:1421) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.startHandshake(SSLSocketImpl.java:455) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.ensureNegotiated(SSLSocketImpl.java:922) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl$AppOutputStream.write(SSLSocketImpl.java:1291) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.write(SocketStream.java:165) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.sendMessage(InternalStreamConnection.java:667) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 13 common frames omitted
+
+2026-04-28T23:16:12.823-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.doHeartbeat(DefaultServerMonitor.java:311) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:262) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796) ~[na:na]
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 5 common frames omitted
+
+2026-04-28T23:16:25.142-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketOpenException: Exception opening socket
+	at com.mongodb.internal.connection.SocketStream.lambda$open$0(SocketStream.java:85) ~[mongodb-driver-core-5.6.5.jar:na]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:85) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:233) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.setupNewConnectionAndGetInitialDescription(DefaultServerMonitor.java:282) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:253) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Connect timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:546) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592) ~[na:na]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[na:na]
+	at java.base/java.net.Socket.connect(Socket.java:751) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:304) ~[na:na]
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:76) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.SocketStream.initializeSocket(SocketStream.java:104) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:79) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 4 common frames omitted
+
+2026-04-28T23:16:41.259-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketReadTimeoutException: Timeout while receiving message
+	at com.mongodb.internal.connection.InternalStreamConnection.createReadTimeoutException(InternalStreamConnection.java:819) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.translateReadException(InternalStreamConnection.java:807) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:857) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveCommandMessageResponse(InternalStreamConnection.java:517) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receive(InternalStreamConnection.java:469) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.doHeartbeat(DefaultServerMonitor.java:311) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:262) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedRead(NioSocketImpl.java:278) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:304) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796) ~[na:na]
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.read(SSLSocketInputRecord.java:489) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.readHeader(SSLSocketInputRecord.java:483) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketInputRecord.bytesInCompletePacket(SSLSocketInputRecord.java:70) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.readApplicationRecord(SSLSocketImpl.java:1461) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl$AppInputStream.read(SSLSocketImpl.java:1066) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.read(SocketStream.java:182) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.receiveResponseBuffers(InternalStreamConnection.java:824) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 5 common frames omitted
+
+2026-04-28T23:16:42.392-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017
+
+com.mongodb.MongoSocketOpenException: Exception opening socket
+	at com.mongodb.internal.connection.SocketStream.lambda$open$0(SocketStream.java:85) ~[mongodb-driver-core-5.6.5.jar:na]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[na:na]
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:85) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:233) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.setupNewConnectionAndGetInitialDescription(DefaultServerMonitor.java:282) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.lookupServerDescription(DefaultServerMonitor.java:253) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitor.run(DefaultServerMonitor.java:203) ~[mongodb-driver-core-5.6.5.jar:na]
+Caused by: java.net.SocketTimeoutException: Connect timed out
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:546) ~[na:na]
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592) ~[na:na]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[na:na]
+	at java.base/java.net.Socket.connect(Socket.java:751) ~[na:na]
+	at java.base/sun.security.ssl.SSLSocketImpl.connect(SSLSocketImpl.java:304) ~[na:na]
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:76) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.SocketStream.initializeSocket(SocketStream.java:104) ~[mongodb-driver-core-5.6.5.jar:na]
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:79) ~[mongodb-driver-core-5.6.5.jar:na]
+	... 4 common frames omitted
+
+2026-04-28T23:16:49.119-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017, type=REPLICA_SET_SECONDARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=609868300, minRoundTripTimeNanos=0, setName='atlas-k4ug34-shard-0', canonicalAddress=ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017, hosts=[ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017], passives=[], arbiters=[], primary='ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='sae1-az1'}, Tag{name='cacheState', value='READY'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='SA_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=34, topologyVersion=TopologyVersion{processId=69e7ad8089d3946611002f8e, counter=4}, lastWriteDate=Tue Apr 28 23:16:46 BRT 2026, lastUpdateTimeNanos=701328762920600}
+2026-04-28T23:17:09.860-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, type=REPLICA_SET_SECONDARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=1727582200, minRoundTripTimeNanos=0, setName='atlas-k4ug34-shard-0', canonicalAddress=ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, hosts=[ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017], passives=[], arbiters=[], primary='ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='sae1-az2'}, Tag{name='cacheState', value='READY'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='SA_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=null, setVersion=34, topologyVersion=TopologyVersion{processId=69e7ade3a1b0cef28177b2ae, counter=3}, lastWriteDate=Tue Apr 28 23:17:08 BRT 2026, lastUpdateTimeNanos=701349501725700}
+2026-04-28T23:17:30.953-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, type=REPLICA_SET_PRIMARY, cryptd=false, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=25, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=11037082700, minRoundTripTimeNanos=0, setName='atlas-k4ug34-shard-0', canonicalAddress=ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, hosts=[ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-02.wx4tjw1.mongodb.net:27017, ac-4yq4xke-shard-00-00.wx4tjw1.mongodb.net:27017], passives=[], arbiters=[], primary='ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017', tagSet=TagSet{[Tag{name='availabilityZone', value='sae1-az3'}, Tag{name='cacheState', value='READY'}, Tag{name='diskState', value='READY'}, Tag{name='nodeType', value='ELECTABLE'}, Tag{name='provider', value='AWS'}, Tag{name='region', value='SA_EAST_1'}, Tag{name='workloadType', value='OPERATIONAL'}]}, electionId=7fffffff00000000000000cf, setVersion=34, topologyVersion=TopologyVersion{processId=69e7adb22645b639d2959592, counter=6}, lastWriteDate=Tue Apr 28 23:17:29 BRT 2026, lastUpdateTimeNanos=701370607567600}
+2026-04-28T23:17:31.107-03:00  INFO 26060 --- [WtcSync] [ngodb.net:27017] org.mongodb.driver.cluster               : Discovered replica set primary ac-4yq4xke-shard-00-01.wx4tjw1.mongodb.net:27017 with max election id 7fffffff00000000000000cf and max set version 34

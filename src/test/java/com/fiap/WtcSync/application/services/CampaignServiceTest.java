@@ -5,8 +5,10 @@ import com.fiap.WtcSync.application.dtos.CampaignResponseDTO;
 import com.fiap.WtcSync.domain.entities.Campaign;
 import com.fiap.WtcSync.domain.entities.Campaign.CampaignStats;
 import com.fiap.WtcSync.domain.entities.Segment;
+import com.fiap.WtcSync.domain.enums.CampaignStatus;
 import com.fiap.WtcSync.domain.interfaces.ICampaignRepository;
 import com.fiap.WtcSync.domain.interfaces.ISegmentRepository;
+import com.fiap.WtcSync.domain.interfaces.IUserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -37,6 +39,12 @@ class CampaignServiceTest {
     @Mock
     private DeeplinkValidator deeplinkValidator;
 
+    @Mock
+    private IUserRepository userRepository;
+
+    @Mock
+    private NotificationService notificationService;
+
     @InjectMocks
     private CampaignService campaignService;
 
@@ -46,7 +54,7 @@ class CampaignServiceTest {
         campaign.setTitle(title);
         campaign.setBody(body);
         campaign.setSegmentId(segmentId);
-        campaign.setStatus("DRAFT");
+        campaign.setStatus(CampaignStatus.DRAFT);
         campaign.setDeeplink("wtcapp://");
         campaign.setCreatedBy("operator@wtc.com");
         campaign.setStats(new CampaignStats(0, 0, 0, 0));
@@ -84,7 +92,7 @@ class CampaignServiceTest {
         assertEquals("Financial Shift 2025", result.title());
         assertEquals("Evento de finanças", result.body());
         assertEquals("seg-1", result.segmentId());
-        assertEquals("DRAFT", result.status());
+        assertEquals(CampaignStatus.DRAFT, result.status());
         assertEquals("operator@wtc.com", result.createdBy());
         assertEquals(0, result.stats().getTotalTargeted());
         assertEquals(0, result.stats().getTotalDelivered());
