@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -34,5 +35,12 @@ public class UserRepository implements IUserRepository {
     public boolean existsByEmail(String email) {
         Query query = new Query(Criteria.where("email").is(email));
         return mongoTemplate.exists(query, User.class);
+    }
+
+    @Override
+    public List<User> findAllBySegmentIdAndFcmTokenNotNull(String segmentId) {
+        Query query = new Query(Criteria.where("segmentId").is(segmentId)
+                .and("fcmToken").ne(null).ne(""));
+        return mongoTemplate.find(query, User.class);
     }
 }

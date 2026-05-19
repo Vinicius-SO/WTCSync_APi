@@ -10,4 +10,5 @@ public interface ICampaignRepository {
     List<Campaign> findAll();
     Optional<Campaign> findById(String id);
     Campaign save(Campaign campaign);
+    void deleteById(String id);
 }

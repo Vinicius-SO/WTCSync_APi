@@ -1,5 +1,6 @@
 package com.fiap.WtcSync.domain.entities;
 
+import com.fiap.WtcSync.domain.enums.CampaignStatus;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -18,7 +19,7 @@ public class Campaign {
     private String title;
     private String body;
     private String segmentId;
-    private String status;
+    private CampaignStatus status;
     private String mediaUrl;
     private String deeplink;
     private List<CampaignAction> actions;
@@ -43,8 +44,8 @@ public class Campaign {
     public void setBody(String body) { this.body = body; }
     public String getSegmentId() { return segmentId; }
     public void setSegmentId(String segmentId) { this.segmentId = segmentId; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public CampaignStatus getStatus() { return status; }
+    public void setStatus(CampaignStatus status) { this.status = status; }
     public String getMediaUrl() { return mediaUrl; }
     public void setMediaUrl(String mediaUrl) { this.mediaUrl = mediaUrl; }
     public String getDeeplink() { return deeplink; }
