@@ -60,6 +60,18 @@ public class MessageController {
         return ResponseEntity.ok(messageService.getInbox(customerId));
     }
 
+    @GetMapping("/conversation")
+    @Operation(summary = "Get conversation between operator and customer",
+               description = "Retrieves all messages exchanged between a specific operator (senderId) and a customer (customerId)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Conversation retrieved successfully")
+    })
+    public ResponseEntity<List<MessageResponseDTO>> getConversation(
+            @RequestParam String senderId,
+            @RequestParam String customerId) {
+        return ResponseEntity.ok(messageService.getConversation(senderId, customerId));
+    }
+
     @PatchMapping("/messages/{id}/status")
     @Operation(summary = "Update message status", description = "Updates the delivery status of a message (ENVIADO, ENTREGUE, LIDO, FALHA)")
     @ApiResponses(value = {

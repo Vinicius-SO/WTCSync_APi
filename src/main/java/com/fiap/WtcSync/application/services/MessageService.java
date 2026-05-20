@@ -39,6 +39,12 @@ public class MessageService {
                 .toList();
     }
 
+    public List<MessageResponseDTO> getConversation(String senderId, String customerId) {
+        return messageRepository.findBySenderIdAndCustomerId(senderId, customerId).stream()
+                .map(this::toResponseDTO)
+                .toList();
+    }
+
     public MessageResponseDTO updateStatus(String id, MessageStatus status) {
         messageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Message not found: " + id));

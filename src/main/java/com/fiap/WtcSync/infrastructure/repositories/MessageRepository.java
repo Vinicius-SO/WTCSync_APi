@@ -39,6 +39,15 @@ public class MessageRepository implements IMessageRepository {
     }
 
     @Override
+    public List<Message> findBySenderIdAndCustomerId(String senderId, String customerId) {
+        Query query = new Query(
+            Criteria.where("senderId").is(senderId)
+                    .and("customerId").is(customerId)
+        );
+        return mongoTemplate.find(query, Message.class);
+    }
+
+    @Override
     public Message updateStatus(String id, MessageStatus status) {
         Query query = new Query(Criteria.where("_id").is(id));
         Update update = new Update().set("status", status);
