@@ -1,0 +1,7 @@
+services:
+
+  app:
+    build: .
+    container_name: wtcsync-api
+    ports:
+      - "8080:8080"
