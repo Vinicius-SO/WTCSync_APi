@@ -1,4 +1,4 @@
-package com.fiap.WtcSync.application;
+package com.fiap.WtcSync.application.services;
 
 import com.fiap.WtcSync.domain.entities.ChatMessage;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -13,19 +13,11 @@ public class ChatService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    // Mensagem 1:1 — entrega no tópico privado do destinatário
-    public void sendToUser(ChatMessage message) {
-        messagingTemplate.convertAndSend(
-            "/topic/chat/" + message.getReceiverId(),
-            message
-        );
-    }
-
-    // Mensagem para segmento — entrega no tópico do grupo
-    public void sendToSegment(ChatMessage message) {
-        messagingTemplate.convertAndSend(
-            "/topic/segment/" + message.getSegmentId(),
-            message
+    public void sendToUser(String receiverId, ChatMessage message) {
+        messagingTemplate.convertAndSendToUser(
+                receiverId,
+                "/queue/messages",
+                message
         );
     }
 }

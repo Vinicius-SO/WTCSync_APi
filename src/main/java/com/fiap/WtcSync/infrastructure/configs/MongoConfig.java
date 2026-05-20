@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @Configuration
 @EnableMongoAuditing
-@EnableMongoRepositories(basePackages = "com.fiap.WtcSync.infrastructure.repositories")
+@EnableMongoRepositories(basePackages = {"com.fiap.WtcSync.infrastructure.repositories", "com.fiap.WtcSync.domain.interfaces"})
 public class MongoConfig {
 
     @Value("${spring.data.mongodb.uri}")
