@@ -9,8 +9,8 @@ import com.fiap.WtcSync.application.services.TokenService;
 import com.fiap.WtcSync.domain.entities.User;
 import com.fiap.WtcSync.domain.interfaces.IUserRepository;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
+import com.google.auth.oauth2.TokenVerifier;
+import com.fiap.WtcSync.application.services.FirebaseIdentityVerifier;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -32,11 +32,13 @@ public class AuthController {
   private final TokenService tokenService;
   private final PasswordEncoder passwordEncoder;
   private final IUserRepository userRepository;
+  private final FirebaseIdentityVerifier firebaseIdentityVerifier;
 
-  public AuthController(TokenService tokenService, PasswordEncoder passwordEncoder, IUserRepository userRepository) {
+  public AuthController(TokenService tokenService, PasswordEncoder passwordEncoder, IUserRepository userRepository, FirebaseIdentityVerifier firebaseIdentityVerifier) {
     this.tokenService = tokenService;
     this.passwordEncoder = passwordEncoder;
     this.userRepository = userRepository;
+    this.firebaseIdentityVerifier = firebaseIdentityVerifier;
   }
 
   @PostMapping("/login")
@@ -66,16 +68,12 @@ public class AuthController {
   }
 
   @PostMapping("/google")
-  @Operation(summary = "Exchange verified Google Firebase ID token for API JWT")
+  @Operation(summary = "Exchange Google Firebase ID token verified with public signing certificates for API JWT")
   public ResponseEntity<?> loginWithGoogle(@RequestBody Map<String, String> request) {
     String idToken = request.get("idToken");
     if (idToken == null || idToken.isBlank()) return ResponseEntity.badRequest().build();
     try {
-      FirebaseToken verified = FirebaseAuth.getInstance().verifyIdToken(idToken);
-      String email = verified.getEmail();
-      if (email == null || !Boolean.TRUE.equals(verified.isEmailVerified())) {
-        return ResponseEntity.status(401).build();
-      }
+      String email = firebaseIdentityVerifier.verifiedGoogleEmail(idToken);
       Optional<User> existing = userRepository.findByEmail(email);
       if (existing.isEmpty() || !Boolean.TRUE.equals(existing.get().getActive())) {
         return ResponseEntity.status(403).build();
@@ -83,7 +81,7 @@ public class AuthController {
       User user = existing.get();
       String token = tokenService.generateToken(user.getEmail());
       return ResponseEntity.ok(new AuthResponseDTO(token, user.getEmail(), tokenService.getExpiration()));
-    } catch (FirebaseAuthException e) {
+    } catch (TokenVerifier.VerificationException e) {
       return ResponseEntity.status(401).build();
     } catch (IllegalStateException e) {
       return ResponseEntity.status(503).build();

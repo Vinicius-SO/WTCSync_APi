@@ -5,7 +5,8 @@ import com.fiap.WtcSync.application.dtos.UsuarioRequestDTO;
 import com.fiap.WtcSync.application.services.TokenService;
 import com.fiap.WtcSync.domain.entities.User;
 import com.fiap.WtcSync.domain.interfaces.IUserRepository;
-import com.google.firebase.auth.FirebaseAuth;
+import com.fiap.WtcSync.application.services.FirebaseIdentityVerifier;
+import com.google.auth.oauth2.TokenVerifier;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,8 @@ class AuthControllerTest {
     IUserRepository users = mock(IUserRepository.class);
     TokenService tokens = mock(TokenService.class);
     PasswordEncoder passwords = mock(PasswordEncoder.class);
-    AuthController controller = new AuthController(tokens, passwords, users);
+    FirebaseIdentityVerifier identities = mock(FirebaseIdentityVerifier.class);
+    AuthController controller = new AuthController(tokens, passwords, users, identities);
     User user;
 
     @BeforeEach void setup() {
@@ -85,10 +87,28 @@ class AuthControllerTest {
         assertEquals(400, controller.register(new UsuarioRequestDTO("test@example.com", "x", "Test")).getStatusCode().value());
         verifyNoInteractions(users);
     }
-    @Test void googleWithoutServerConfigurationReturnsServiceUnavailable() {
-        try (var firebase = mockStatic(FirebaseAuth.class)) {
-            firebase.when(FirebaseAuth::getInstance).thenThrow(new IllegalStateException("not configured"));
-            assertEquals(503, controller.loginWithGoogle(Map.of("idToken", "test-token")).getStatusCode().value());
-        }
+    @Test void verifiedGoogleAccountCanLoginWithoutFirebaseAdmin() throws Exception {
+        when(identities.verifiedGoogleEmail("valid-token")).thenReturn(user.getEmail());
+        when(users.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        when(tokens.generateToken(user.getEmail())).thenReturn("jwt");
+        assertEquals(200, controller.loginWithGoogle(Map.of("idToken", "valid-token")).getStatusCode().value());
+    }
+    @Test void forgedGoogleIdentityCannotReachAccountLookup() throws Exception {
+        when(identities.verifiedGoogleEmail("forged")).thenThrow(new TokenVerifier.VerificationException("invalid"));
+        assertEquals(401, controller.loginWithGoogle(Map.of("idToken", "forged")).getStatusCode().value());
+        verifyNoInteractions(users, tokens);
+    }
+    @Test void googleLoginCannotReactivateDisabledAccount() throws Exception {
+        user.setActive(false);
+        when(identities.verifiedGoogleEmail("valid")).thenReturn(user.getEmail());
+        when(users.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+        assertEquals(403, controller.loginWithGoogle(Map.of("idToken", "valid")).getStatusCode().value());
+        verifyNoInteractions(tokens);
+    }
+    @Test void googleLoginRequiresRegisteredAccount() throws Exception {
+        when(identities.verifiedGoogleEmail("valid")).thenReturn("new@example.com");
+        when(users.findByEmail("new@example.com")).thenReturn(Optional.empty());
+        assertEquals(403, controller.loginWithGoogle(Map.of("idToken", "valid")).getStatusCode().value());
+        verify(users, never()).save(any());
     }
 }
