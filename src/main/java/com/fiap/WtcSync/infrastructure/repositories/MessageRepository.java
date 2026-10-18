@@ -34,7 +34,8 @@ public class MessageRepository implements IMessageRepository {
 
     @Override
     public List<Message> findByCustomerId(String customerId) {
-        Query query = new Query(Criteria.where("customerId").is(customerId));
+        Query query = new Query(Criteria.where("customerId").is(customerId))
+                .with(org.springframework.data.domain.Sort.by("createdAt", "id"));
         return mongoTemplate.find(query, Message.class);
     }
 

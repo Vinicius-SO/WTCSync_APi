@@ -30,10 +30,13 @@ public class SecurityConfig {
             .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/index.html")
             .permitAll()
             .requestMatchers("/api/auth/login", "/api/auth/google", "/api/auth/register").permitAll()
-            .requestMatchers("/api/auth/me", "/api/auth/firebase-token").authenticated()
-            .requestMatchers("/api/auth/me").authenticated()
-            .requestMatchers("/api/chat/**").authenticated()
-            .anyRequest().permitAll())
+            .requestMatchers("/api/health", "/api/deeplinks/routes").permitAll()
+            .requestMatchers("/api/auth/me", "/api/auth/firebase-token", "/api/users/me/fcm-token").authenticated()
+            .requestMatchers("/api/clients/me").hasAuthority("CLIENT")
+            .requestMatchers("/messages/**", "/inbox/**", "/conversation").hasAnyAuthority("CLIENT", "OPERATOR", "ATENDENTE")
+            .requestMatchers("/api/clients/**").hasAnyAuthority("OPERATOR", "ATENDENTE")
+            .requestMatchers("/api/campaigns/**", "/api/segments/**", "/api/audit/**", "/api/health/errors").hasAuthority("OPERATOR")
+            .anyRequest().denyAll())
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();

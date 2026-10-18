@@ -22,7 +22,10 @@ public class MessageController {
 
     private final MessageService messageService;
 
-    public MessageController(MessageService messageService) {
+    private final com.fiap.WtcSync.application.services.AccountAccess access;
+
+    public MessageController(MessageService messageService, com.fiap.WtcSync.application.services.AccountAccess access) {
+        this.access = access;
         this.messageService = messageService;
     }
 
@@ -33,7 +36,8 @@ public class MessageController {
             @ApiResponse(responseCode = "400", description = "Invalid request data")
     })
     public ResponseEntity<MessageResponseDTO> sendMessage(@Valid @RequestBody MessageDTO dto) {
-        MessageResponseDTO response = messageService.sendMessage(dto);
+        access.requireConversation(dto.customerId());
+        MessageResponseDTO response = messageService.sendMessage(new MessageDTO(access.email(), dto.customerId(), dto.text(), dto.actionUrls()));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -45,7 +49,11 @@ public class MessageController {
     })
     public ResponseEntity<MessageResponseDTO> getMessageById(@PathVariable String id) {
         try {
-            return ResponseEntity.ok(messageService.getMessageById(id));
+            var message = messageService.getMessageById(id);
+            access.requireConversation(message.customerId());
+            return ResponseEntity.ok(message);
+        } catch (org.springframework.security.access.AccessDeniedException e) {
+            throw e;
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
@@ -57,6 +65,7 @@ public class MessageController {
             @ApiResponse(responseCode = "200", description = "Messages retrieved successfully")
     })
     public ResponseEntity<List<MessageResponseDTO>> getInbox(@PathVariable String customerId) {
+        access.requireConversation(customerId);
         return ResponseEntity.ok(messageService.getInbox(customerId));
     }
 
@@ -69,7 +78,8 @@ public class MessageController {
     public ResponseEntity<List<MessageResponseDTO>> getConversation(
             @RequestParam String senderId,
             @RequestParam String customerId) {
-        return ResponseEntity.ok(messageService.getConversation(senderId, customerId));
+        access.requireConversation(customerId);
+        return ResponseEntity.ok(messageService.getInbox(customerId));
     }
 
     @PatchMapping("/messages/{id}/status")
@@ -83,6 +93,7 @@ public class MessageController {
             @PathVariable String id,
             @RequestBody Map<String, String> body) {
         try {
+            access.requireConversation(messageService.getMessageById(id).customerId());
             String statusStr = body.get("status");
             if (statusStr == null || statusStr.isBlank()) {
                 return ResponseEntity.badRequest().build();
@@ -91,6 +102,8 @@ public class MessageController {
             return ResponseEntity.ok(messageService.updateStatus(id, status));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
+        } catch (org.springframework.security.access.AccessDeniedException e) {
+            throw e;
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }

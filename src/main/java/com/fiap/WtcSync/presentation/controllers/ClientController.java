@@ -26,6 +26,11 @@ public class ClientController {
         this.clientService = clientService;
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<ClientResponseDTO> me(Authentication authentication) {
+        return ResponseEntity.ok(clientService.getOrCreateForAccount(authentication.getName()));
+    }
+
     @GetMapping
     @Operation(summary = "Lista clientes", description = "Lista todos os clientes com filtros opcionais")
     @ApiResponses(value = {

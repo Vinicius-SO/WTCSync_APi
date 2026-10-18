@@ -43,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .filter(user -> Boolean.TRUE.equals(user.getActive()))
                     .ifPresent(user -> {
                     List<GrantedAuthority> authorities = List.of(
-                            new SimpleGrantedAuthority(user.getRole())
+                            new SimpleGrantedAuthority(com.fiap.WtcSync.application.services.AccountAccess.canonicalRole(user.getRole()))
                     );
 
                     UsernamePasswordAuthenticationToken authentication =

@@ -40,6 +40,27 @@ public class ClientRepository implements IClientRepository {
     }
 
     @Override
+    public Optional<Client> findByEmail(String email) {
+        return Optional.ofNullable(mongoTemplate.findOne(new Query(Criteria.where("email")
+                .regex("^" + java.util.regex.Pattern.quote(email) + "$", "i")), Client.class));
+    }
+
+    @Override
+    public Client findOrCreateForAccount(String email, String name) {
+        var existing = findByEmail(email);
+        if (existing.isPresent()) return existing.get();
+        // Deterministic ID and atomic upsert prevent duplicate support records on simultaneous requests.
+        String id = "account-" + java.util.UUID.nameUUIDFromBytes(email.toLowerCase(java.util.Locale.ROOT)
+                .getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        var update = new org.springframework.data.mongodb.core.query.Update()
+                .setOnInsert("email", email).setOnInsert("name", name)
+                .setOnInsert("status", "active").setOnInsert("score", 0)
+                .setOnInsert("createdAt", java.time.LocalDateTime.now());
+        return mongoTemplate.findAndModify(new Query(Criteria.where("_id").is(id)), update,
+                org.springframework.data.mongodb.core.FindAndModifyOptions.options().upsert(true).returnNew(true), Client.class);
+    }
+
+    @Override
     public Client save(Client client) {
         return mongoTemplate.save(client);
     }

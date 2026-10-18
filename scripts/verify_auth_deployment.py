@@ -19,7 +19,7 @@ for attempt in range(30):
     try:
         code, body = request("/v3/api-docs")
         paths = json.loads(body).get("paths", {}) if code == 200 else {}
-        if "/api/auth/google" in paths:
+        if "/api/clients/me" in paths:
             break
         print(f"Waiting for updated API deployment ({attempt + 1}/30)", flush=True)
     except Exception as error:
@@ -32,6 +32,10 @@ code, _ = request("/api/auth/login", {"email": "invalid-test@example.invalid", "
 assert code == 401, f"Invalid password login should return 401, got {code}"
 code, _ = request("/api/auth/me")
 assert code in (401, 403), f"Anonymous profile should be rejected, got {code}"
+for path in ("/api/clients", "/api/campaigns", "/api/segments", "/inbox/invalid-test", "/ws/info"):
+    code, _ = request(path)
+    assert code in (401, 403), f"Anonymous {path} must be rejected, got {code}"
+print("Role access deployment verified: protected routes reject anonymous requests.", flush=True)
 code, _ = request("/api/auth/google", {"idToken": "invalid-test-token"})
 if code == 503:
     raise SystemExit("Updated API is deployed, but Firebase Admin is not configured on Render (Google returned 503).")
