@@ -29,7 +29,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/index.html")
             .permitAll()
-            .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+            .requestMatchers("/api/auth/login", "/api/auth/google", "/api/auth/register").permitAll()
             .requestMatchers("/api/auth/me", "/api/auth/firebase-token").authenticated()
             .requestMatchers("/api/auth/me").authenticated()
             .requestMatchers("/api/chat/**").authenticated()

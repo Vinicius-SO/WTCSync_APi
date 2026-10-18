@@ -46,19 +46,48 @@ public class AuthController {
       @ApiResponse(responseCode = "401", description = "Invalid credentials")
   })
   public ResponseEntity<AuthResponseDTO> login(@RequestBody AuthRequestDTO request) {
-    Optional<User> userOpt = userRepository.findByEmail(request.email());
+    if (request == null || request.email() == null || request.email().isBlank()
+        || request.password() == null || request.password().isBlank()) {
+      return ResponseEntity.badRequest().build();
+    }
+    Optional<User> userOpt = userRepository.findByEmail(request.email().trim());
 
     if (userOpt.isEmpty() || !passwordEncoder.matches(request.password(), userOpt.get().getPassword())) {
       return ResponseEntity.status(401).build();
     }
 
     User user = userOpt.get();
-    if (!user.getActive()) {
+    if (!Boolean.TRUE.equals(user.getActive())) {
       return ResponseEntity.status(401).build();
     }
 
     String token = tokenService.generateToken(user.getEmail());
     return ResponseEntity.ok(new AuthResponseDTO(token, user.getEmail(), tokenService.getExpiration()));
+  }
+
+  @PostMapping("/google")
+  @Operation(summary = "Exchange verified Google Firebase ID token for API JWT")
+  public ResponseEntity<?> loginWithGoogle(@RequestBody Map<String, String> request) {
+    String idToken = request.get("idToken");
+    if (idToken == null || idToken.isBlank()) return ResponseEntity.badRequest().build();
+    try {
+      FirebaseToken verified = FirebaseAuth.getInstance().verifyIdToken(idToken);
+      String email = verified.getEmail();
+      if (email == null || !Boolean.TRUE.equals(verified.isEmailVerified())) {
+        return ResponseEntity.status(401).build();
+      }
+      Optional<User> existing = userRepository.findByEmail(email);
+      if (existing.isEmpty() || !Boolean.TRUE.equals(existing.get().getActive())) {
+        return ResponseEntity.status(403).build();
+      }
+      User user = existing.get();
+      String token = tokenService.generateToken(user.getEmail());
+      return ResponseEntity.ok(new AuthResponseDTO(token, user.getEmail(), tokenService.getExpiration()));
+    } catch (FirebaseAuthException e) {
+      return ResponseEntity.status(401).build();
+    } catch (IllegalStateException e) {
+      return ResponseEntity.status(503).build();
+    }
   }
 
   @PostMapping("/register")
@@ -68,12 +97,19 @@ public class AuthController {
       @ApiResponse(responseCode = "400", description = "Email already exists")
   })
   public ResponseEntity<UsuarioResponseDTO> register(@RequestBody UsuarioRequestDTO request) {
-    if (userRepository.existsByEmail(request.email())) {
+    if (request == null || request.email() == null
+        || !request.email().trim().matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")
+        || request.password() == null || request.password().length() < 6) {
+      return ResponseEntity.badRequest().build();
+    }
+    String email = request.email().trim();
+    if (userRepository.existsByEmail(email)) {
       return ResponseEntity.badRequest().build();
     }
 
     String encodedPassword = passwordEncoder.encode(request.password());
-    User user = new User("New User", request.email(), encodedPassword, "CLIENT");
+    String name = request.name() == null || request.name().isBlank() ? "New User" : request.name().trim();
+    User user = new User(name, email, encodedPassword, "CLIENT");
     User saved = userRepository.save(user);
 
     return ResponseEntity.ok(new UsuarioResponseDTO(saved.getId(), saved.getEmail()));
@@ -87,8 +123,15 @@ public class AuthController {
   })
   public ResponseEntity<Map<String, String>> getCurrentUser() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth == null || !auth.isAuthenticated()) return ResponseEntity.status(401).build();
     String email = auth.getName();
-    return ResponseEntity.ok(Map.of("email", email));
+    return userRepository.findByEmail(email)
+        .filter(user -> Boolean.TRUE.equals(user.getActive()))
+        .map(user -> ResponseEntity.ok(Map.of(
+            "email", user.getEmail(), "role", user.getRole(),
+            "id", user.getId() == null ? user.getEmail() : user.getId(),
+            "name", user.getName() == null ? user.getEmail() : user.getName())))
+        .orElseGet(() -> ResponseEntity.status(401).build());
   }
 
   @PostMapping("/firebase-token")
