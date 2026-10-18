@@ -61,6 +61,29 @@ public class AuthController {
     return ResponseEntity.ok(new AuthResponseDTO(token, user.getEmail(), tokenService.getExpiration()));
   }
 
+  @PostMapping("/google")
+  @Operation(summary = "Exchange verified Google Firebase ID token for API JWT")
+  public ResponseEntity<?> loginWithGoogle(@RequestBody Map<String, String> request) {
+    String idToken = request.get("idToken");
+    if (idToken == null || idToken.isBlank()) return ResponseEntity.badRequest().build();
+    try {
+      FirebaseToken verified = FirebaseAuth.getInstance().verifyIdToken(idToken);
+      String email = verified.getEmail();
+      if (email == null || !Boolean.TRUE.equals(verified.isEmailVerified())) {
+        return ResponseEntity.status(401).build();
+      }
+      Optional<User> existing = userRepository.findByEmail(email);
+      if (existing.isEmpty() || !Boolean.TRUE.equals(existing.get().getActive())) {
+        return ResponseEntity.status(403).build();
+      }
+      User user = existing.get();
+      String token = tokenService.generateToken(user.getEmail());
+      return ResponseEntity.ok(new AuthResponseDTO(token, user.getEmail(), tokenService.getExpiration()));
+    } catch (FirebaseAuthException e) {
+      return ResponseEntity.status(401).build();
+    }
+  }
+
   @PostMapping("/register")
   @Operation(summary = "Register user", description = "Create a new user account")
   @ApiResponses(value = {
@@ -88,7 +111,9 @@ public class AuthController {
   public ResponseEntity<Map<String, String>> getCurrentUser() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     String email = auth.getName();
-    return ResponseEntity.ok(Map.of("email", email));
+    return userRepository.findByEmail(email)
+        .map(user -> ResponseEntity.ok(Map.of("email", user.getEmail(), "role", user.getRole())))
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @PostMapping("/firebase-token")
