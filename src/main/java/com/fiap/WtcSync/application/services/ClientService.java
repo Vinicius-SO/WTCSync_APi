@@ -25,6 +25,10 @@ public class ClientService {
         this.auditLogService = auditLogService;
     }
 
+    public ClientResponseDTO getOrCreateForAccount(String email) {
+        return toResponse(clientRepository.findOrCreateForAccount(email, email));
+    }
+
     public List<ClientResponseDTO> listClients(String tag, Integer score, String status, String segmentId) {
         List<Client> clients;
         if (tag == null && score == null && status == null && segmentId == null) {

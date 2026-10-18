@@ -1,7 +1,7 @@
 name: API authentication checks
 on:
   push:
-    branches: [main, feature/unified-auth]
+    branches: [main, feature/unified-auth, feature/role-access]
   pull_request:
   workflow_dispatch:
 permissions:
