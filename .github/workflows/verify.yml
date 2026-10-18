@@ -1,0 +1,22 @@
+name: API authentication checks
+on:
+  push:
+    branches: [main, feature/unified-auth]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Test without production services
+        run: mvn -B '-Dtest=*Test,!WtcSyncApplicationTests' test
+      - name: Package
+        run: mvn -B -DskipTests package

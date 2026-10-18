@@ -8,5 +8,6 @@ public record UsuarioRequestDTO(
     String email,
     
     @Schema(description = "User password (min 6 characters)", example = "password123", requiredMode = Schema.RequiredMode.REQUIRED)
-    String password
+    String password,
+    String name
 ) {}
