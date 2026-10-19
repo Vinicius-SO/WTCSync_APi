@@ -10,7 +10,9 @@ import static org.mockito.Mockito.*;
 class MessageAuthorizationTest {
     MessageService service = mock(MessageService.class);
     AccountAccess access = mock(AccountAccess.class);
-    MessageController controller = new MessageController(service, access);
+    SupportQueueService queue = mock(SupportQueueService.class);
+    SupportEvents events = mock(SupportEvents.class);
+    MessageController controller = new MessageController(service, access, queue, events);
     @Test void senderComesFromAuthenticatedAccount() {
         when(access.email()).thenReturn("real@example.com");
         controller.sendMessage(new MessageDTO("spoofed@example.com", "own", "Hello", null));

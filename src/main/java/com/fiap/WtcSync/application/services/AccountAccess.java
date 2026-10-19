@@ -29,6 +29,11 @@ public class AccountAccess {
         return auth.getName();
     }
 
+    public boolean isStaff() {
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+            .anyMatch(a -> "OPERATOR".equals(a.getAuthority()) || "ATENDENTE".equals(a.getAuthority()));
+    }
+
     public void requireConversation(String customerId) {
         String email = email();
         var auth = SecurityContextHolder.getContext().getAuthentication();
