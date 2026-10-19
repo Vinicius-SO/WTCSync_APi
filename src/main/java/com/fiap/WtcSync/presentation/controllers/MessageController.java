@@ -24,10 +24,15 @@ public class MessageController {
 
     private final com.fiap.WtcSync.application.services.AccountAccess access;
 
-    public MessageController(MessageService messageService, com.fiap.WtcSync.application.services.AccountAccess access) {
+    public MessageController(MessageService messageService, com.fiap.WtcSync.application.services.AccountAccess access,
+            com.fiap.WtcSync.application.services.SupportQueueService queue, com.fiap.WtcSync.application.services.SupportEvents events) {
+        this.queue = queue; this.events = events;
         this.access = access;
         this.messageService = messageService;
     }
+
+    private final com.fiap.WtcSync.application.services.SupportQueueService queue;
+    private final com.fiap.WtcSync.application.services.SupportEvents events;
 
     @PostMapping("/messages")
     @Operation(summary = "Send a message", description = "Creates and sends a new message with status ENVIADO")
@@ -37,7 +42,10 @@ public class MessageController {
     })
     public ResponseEntity<MessageResponseDTO> sendMessage(@Valid @RequestBody MessageDTO dto) {
         access.requireConversation(dto.customerId());
+        if (access.isStaff()) queue.requireOwner(dto.customerId(), access.email());
+        else queue.open(dto.customerId());
         MessageResponseDTO response = messageService.sendMessage(new MessageDTO(access.email(), dto.customerId(), dto.text(), dto.actionUrls()));
+        events.publish(dto.customerId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -99,7 +107,9 @@ public class MessageController {
                 return ResponseEntity.badRequest().build();
             }
             MessageStatus status = MessageStatus.valueOf(statusStr);
-            return ResponseEntity.ok(messageService.updateStatus(id, status));
+            var updated = messageService.updateStatus(id, status);
+            events.publish(updated.customerId());
+            return ResponseEntity.ok(updated);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         } catch (org.springframework.security.access.AccessDeniedException e) {

@@ -19,7 +19,7 @@ for attempt in range(30):
     try:
         code, body = request("/v3/api-docs")
         paths = json.loads(body).get("paths", {}) if code == 200 else {}
-        if "public signing certificates" in paths.get("/api/auth/google", {}).get("post", {}).get("summary", ""):
+        if "/api/support/queue" in paths:
             break
         print(f"Waiting for updated API deployment ({attempt + 1}/30)", flush=True)
     except Exception as error:
@@ -32,7 +32,7 @@ code, _ = request("/api/auth/login", {"email": "invalid-test@example.invalid", "
 assert code == 401, f"Invalid password login should return 401, got {code}"
 code, _ = request("/api/auth/me")
 assert code in (401, 403), f"Anonymous profile should be rejected, got {code}"
-for path in ("/api/clients", "/api/campaigns", "/api/segments", "/inbox/invalid-test", "/ws/info"):
+for path in ("/api/clients", "/api/campaigns", "/api/segments", "/inbox/invalid-test", "/ws/info", "/ws/support", "/api/support/queue"):
     code, _ = request(path)
     assert code in (401, 403), f"Anonymous {path} must be rejected, got {code}"
 print("Role access deployment verified: protected routes reject anonymous requests.", flush=True)
