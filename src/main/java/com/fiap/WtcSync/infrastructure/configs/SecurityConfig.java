@@ -27,6 +27,7 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
+            .dispatcherTypeMatchers(jakarta.servlet.DispatcherType.ERROR).permitAll()
             .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/index.html")
             .permitAll()
             .requestMatchers("/api/auth/login", "/api/auth/google", "/api/auth/register").permitAll()

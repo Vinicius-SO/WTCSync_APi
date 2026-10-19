@@ -13,7 +13,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Service
-public class SupportQueueService {
+public class SupportQueueService implements org.springframework.boot.ApplicationRunner {
     @Document("support_queue")
     public static class Ticket {
         @Id public String customerId;
@@ -26,6 +26,12 @@ public class SupportQueueService {
     private final IClientRepository clients;
     public SupportQueueService(MongoTemplate mongo, IClientRepository clients) {
         this.mongo = mongo; this.clients = clients;
+    }
+    @Override public void run(org.springframework.boot.ApplicationArguments args) {
+        // Preserve visibility of conversations created before the queue existed. Upserts never replace an owner.
+        for (String id : mongo.findDistinct(new Query(), "customerId", com.fiap.WtcSync.domain.entities.Message.class, String.class)) {
+            if (id != null && clients.findById(id).isPresent()) open(id);
+        }
     }
     public Ticket open(String id) {
         var client = clients.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
