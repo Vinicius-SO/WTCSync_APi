@@ -59,6 +59,13 @@ public class MessageRepository implements IMessageRepository {
     }
 
     @Override
+    public boolean deleteByAuthor(String id, String authorEmail) {
+        Query query = new Query(Criteria.where("_id").is(id).and("senderId")
+                .regex("^" + java.util.regex.Pattern.quote(authorEmail) + "$", "i"));
+        return mongoTemplate.remove(query, Message.class).getDeletedCount() == 1;
+    }
+
+    @Override
     public Message updateStatus(String id, MessageStatus status) {
         Query query = new Query(Criteria.where("_id").is(id));
         Update update = new Update().set("status", status);

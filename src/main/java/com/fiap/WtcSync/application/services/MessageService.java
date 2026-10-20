@@ -59,6 +59,15 @@ public class MessageService {
                 new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND)));
     }
 
+    public void deleteMessage(String id, String authorEmail) {
+        Message message = messageRepository.findById(id).orElseThrow(() ->
+                new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND));
+        if (message.getSenderId() == null || !message.getSenderId().equalsIgnoreCase(authorEmail))
+            throw new org.springframework.security.access.AccessDeniedException("Only the author can delete a message");
+        if (!messageRepository.deleteByAuthor(id, authorEmail))
+            throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND);
+    }
+
     public MessageResponseDTO updateStatus(String id, MessageStatus status) {
         messageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Message not found: " + id));

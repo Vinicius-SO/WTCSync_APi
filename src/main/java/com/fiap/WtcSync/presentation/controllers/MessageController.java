@@ -90,6 +90,16 @@ public class MessageController {
         return ResponseEntity.ok(messageService.getInbox(customerId));
     }
 
+    @DeleteMapping("/messages/{id}")
+    @Operation(summary = "Delete own message", description = "Removes the message for both sides of the conversation; only the authenticated author can delete it")
+    public ResponseEntity<Void> deleteMessage(@PathVariable String id) {
+        var message = messageService.getMessageById(id);
+        access.requireConversation(message.customerId());
+        messageService.deleteMessage(id, access.email());
+        events.publish(message.customerId());
+        return ResponseEntity.noContent().build();
+    }
+
     @PatchMapping("/messages/{id}")
     @Operation(summary = "Edit own message text", description = "Only the authenticated author can edit the text; original timestamp and delivery status are preserved")
     public ResponseEntity<MessageResponseDTO> editMessage(@PathVariable String id,
