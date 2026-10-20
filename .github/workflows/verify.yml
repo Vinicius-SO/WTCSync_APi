@@ -1,7 +1,7 @@
 name: API authentication checks
 on:
   push:
-    branches: [main, feature/reliable-chat, feature/message-delete, feature/message-edit, feature/client-profile-campaign, feature/unified-auth, feature/role-access, feature/support-queue, fix/client-edit-profile]
+    branches: [main, feature/ticket-lifecycle, feature/reliable-chat, feature/message-delete, feature/message-edit, feature/client-profile-campaign, feature/unified-auth, feature/role-access, feature/support-queue, fix/client-edit-profile]
   pull_request:
   workflow_dispatch:
 permissions:

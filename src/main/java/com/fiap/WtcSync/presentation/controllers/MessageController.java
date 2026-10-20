@@ -48,11 +48,14 @@ public class MessageController {
             if (!access.email().equalsIgnoreCase(dto.senderId()))
                 throw new org.springframework.security.access.AccessDeniedException("Queued message belongs to a different account");
             var previous = messageService.findPreviouslySent(request);
-            if (previous.isPresent()) return ResponseEntity.status(HttpStatus.CREATED).body(previous.get());
+            if (previous.isPresent()) {
+                if (!access.isStaff()) queue.onClientMessage(previous.get());
+                return ResponseEntity.status(HttpStatus.CREATED).body(previous.get());
+            }
         }
         if (access.isStaff()) queue.requireOwner(dto.customerId(), access.email());
-        else queue.open(dto.customerId());
         MessageResponseDTO response = messageService.sendMessage(request);
+        if (!access.isStaff()) queue.onClientMessage(response);
         events.publish(dto.customerId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
