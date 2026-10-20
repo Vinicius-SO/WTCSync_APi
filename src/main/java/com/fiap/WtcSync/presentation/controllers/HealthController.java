@@ -37,6 +37,7 @@ public class HealthController {
         status.put("application", "WTC Sync API");
         status.put("version", "1.0.0");
         status.put("chatPushDelivery", "persistent-v1");
+        status.put("authentication", "profile-in-login-v1");
         return ResponseEntity.ok(status);
     }
 
