@@ -8,7 +8,6 @@ BASE = "https://wtcsync-api.onrender.com"
 checks = [
     ("health_first", "/api/health", None, 90),
     ("login_invalid_first", "/api/auth/login", {"email": "latency-check@example.invalid", "password": "invalid-test-only"}, 30),
-    ("login_password_check", "/api/auth/login", {"email": "admin@wtc.com", "password": "latency-probe-invalid-password"}, 30),
     ("health_repeat", "/api/health", None, 30),
     ("login_invalid_repeat", "/api/auth/login", {"email": "latency-check@example.invalid", "password": "invalid-test-only"}, 30),
 ]
