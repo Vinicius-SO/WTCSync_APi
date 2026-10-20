@@ -22,6 +22,7 @@ public class Client {
     private Integer score;
     private List<String> tags;
     private String segmentId;
+    private String notes;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -30,6 +31,9 @@ public class Client {
     private LocalDateTime updatedAt;
 
     public Client() {}
+
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }

@@ -19,7 +19,7 @@ for attempt in range(30):
     try:
         code, body = request("/v3/api-docs")
         paths = json.loads(body).get("paths", {}) if code == 200 else {}
-        if "/api/support/queue" in paths:
+        if "put" in paths.get("/api/clients/{id}", {}) and "/api/support/queue" in paths:
             break
         print(f"Waiting for updated API deployment ({attempt + 1}/30)", flush=True)
     except Exception as error:

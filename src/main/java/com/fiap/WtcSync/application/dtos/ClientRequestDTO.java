@@ -25,5 +25,8 @@ public record ClientRequestDTO(
     List<String> tags,
 
     @Schema(description = "ID do segmento", example = "abc123")
-    String segmentId
+    String segmentId,
+
+    @Schema(description = "Observações do CRM")
+    String notes
 ) {}
