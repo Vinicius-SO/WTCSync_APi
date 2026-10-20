@@ -109,6 +109,68 @@ class MessageEditIntegrationTest {
         assertEquals(403, call(path, client, "PATCH", "{\"text\":\"Wrong\"}").statusCode());
         assertEquals(403, call(path, attendant, "PATCH", "{\"text\":\"Wrong\"}").statusCode());
     }
+    @Test void deletingOwnMessageRemovesItFromBothHistoriesAndNotifiesOnlyAuthorizedSessions() throws Exception {
+        String client=account("CLIENT"), other=account("CLIENT"), operator=account("OPERATOR");
+        String customer=clientId(client); clientId(other);
+        String id=send(customer, client).get("id").getAsString(), path="/messages/"+id;
+        assertEquals(200, call(path, client, "PATCH", "{\"text\":\"Corrigida antes de apagar\"}").statusCode());
+        var clientEvents=new LinkedBlockingQueue<String>();
+        var operatorEvents=new LinkedBlockingQueue<String>();
+        var otherEvents=new LinkedBlockingQueue<String>();
+        var clientSocket=connect(client, clientEvents);
+        var operatorSocket=connect(operator, operatorEvents);
+        var otherSocket=connect(other, otherEvents);
+        try {
+            assertNotNull(clientEvents.poll(5, TimeUnit.SECONDS));
+            assertNotNull(operatorEvents.poll(5, TimeUnit.SECONDS));
+            assertNotNull(otherEvents.poll(5, TimeUnit.SECONDS));
+            assertEquals(403, call(path, null, "DELETE", null).statusCode());
+            assertEquals(403, call(path, other, "DELETE", null).statusCode());
+            assertEquals(403, call(path, operator, "DELETE", null).statusCode());
+            assertEquals(200, call(path, client, "GET", null).statusCode());
+            assertNull(clientEvents.poll(200, TimeUnit.MILLISECONDS));
+            assertEquals(204, call(path, client, "DELETE", null).statusCode());
+            assertTrue(clientEvents.poll(5, TimeUnit.SECONDS).contains("support_changed"));
+            assertTrue(operatorEvents.poll(5, TimeUnit.SECONDS).contains("support_changed"));
+            assertNull(otherEvents.poll(300, TimeUnit.MILLISECONDS));
+            assertEquals(404, call(path, client, "GET", null).statusCode());
+            assertEquals(404, call(path, operator, "GET", null).statusCode());
+            assertEquals(404, call(path, client, "DELETE", null).statusCode());
+            assertEquals(404, call(path, client, "PATCH", "{\"text\":\"Restore\"}").statusCode());
+            assertEquals(404, call(path+"/status", operator, "PATCH", "{\"status\":\"LIDO\"}").statusCode());
+            for (String token : new String[]{client, operator}) {
+                var inbox=call("/inbox/"+customer, token, "GET", null);
+                assertEquals(200, inbox.statusCode());
+                assertEquals(0, JsonParser.parseString(inbox.body()).getAsJsonArray().size());
+            }
+            assertFalse(call("/api/clients/"+customer+"/profile", operator, "GET", null).body().contains(id));
+        } finally { clientSocket.abort(); operatorSocket.abort(); otherSocket.abort(); }
+    }
+    @Test void staffCanDeleteOnlyTheirOwnMessagesAndConcurrentEditsCannotRecreateDeletedMessages() throws Exception {
+        String client=account("CLIENT"), operator=account("OPERATOR"), attendant=account("ATENDENTE");
+        String customer=clientId(client);
+        assertEquals(200, call("/api/support/"+customer+"/claim", operator, "POST", "{}").statusCode());
+        String path="/messages/"+send(customer, operator).get("id").getAsString();
+        assertEquals(200, call("/api/support/"+customer+"/release", operator, "POST", "{}").statusCode());
+        assertEquals(403, call(path, client, "DELETE", null).statusCode());
+        assertEquals(403, call(path, attendant, "DELETE", null).statusCode());
+        assertEquals(200, call(path, operator, "GET", null).statusCode());
+        try (var executor=Executors.newFixedThreadPool(2)) {
+            var start=new CountDownLatch(1);
+            var deletion=executor.submit(() -> { start.await(); return call(path, operator, "DELETE", null).statusCode(); });
+            var edit=executor.submit(() -> { start.await(); return call(path, operator, "PATCH", "{\"text\":\"Concurrent correction\"}").statusCode(); });
+            start.countDown();
+            assertEquals(204, deletion.get(10, TimeUnit.SECONDS));
+            assertTrue(Set.of(200,404).contains(edit.get(10, TimeUnit.SECONDS)));
+        }
+        assertEquals(404, call(path, operator, "GET", null).statusCode());
+        assertEquals(0, JsonParser.parseString(call("/inbox/"+customer, client, "GET", null).body()).getAsJsonArray().size());
+        // Attendants have the same author-only deletion rights as operators and clients.
+        assertEquals(200, call("/api/support/"+customer+"/claim", attendant, "POST", "{}").statusCode());
+        String ownPath="/messages/"+send(customer, attendant).get("id").getAsString();
+        assertEquals(403, call(ownPath, operator, "DELETE", null).statusCode());
+        assertEquals(204, call(ownPath, attendant, "DELETE", null).statusCode());
+    }
     WebSocket connect(String token, BlockingQueue<String> messages) {
         return http.newWebSocketBuilder().header("Authorization", "Bearer "+token)
             .buildAsync(URI.create("ws://localhost:"+port+"/ws/support"), new WebSocket.Listener() {
