@@ -27,6 +27,12 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
+    public List<User> findActiveStaff() {
+        return mongoTemplate.find(new Query(Criteria.where("active").is(true).and("role")
+                .in("OPERATOR", "ADMIN", "ATENDENTE")), User.class);
+    }
+
+    @Override
     public User save(User user) {
         return mongoTemplate.save(user);
     }

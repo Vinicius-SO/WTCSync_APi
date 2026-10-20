@@ -48,6 +48,7 @@ class MessageEditIntegrationTest {
     @Test void authorEditsPersistAndNotifyBothSidesWithoutLeakingToOtherClients() throws Exception {
         String client=account("CLIENT"), other=account("CLIENT"), operator=account("OPERATOR");
         String customer=clientId(client); clientId(other);
+        assertEquals(200, call("/api/support/"+customer+"/claim", operator, "POST", "{}").statusCode());
         JsonObject original=send(customer, client);
         String id=original.get("id").getAsString(), path="/messages/"+id;
         // Mongo stores timestamps with millisecond precision; compare persisted values.
@@ -112,6 +113,7 @@ class MessageEditIntegrationTest {
     @Test void deletingOwnMessageRemovesItFromBothHistoriesAndNotifiesOnlyAuthorizedSessions() throws Exception {
         String client=account("CLIENT"), other=account("CLIENT"), operator=account("OPERATOR");
         String customer=clientId(client); clientId(other);
+        assertEquals(200, call("/api/support/"+customer+"/claim", operator, "POST", "{}").statusCode());
         String id=send(customer, client).get("id").getAsString(), path="/messages/"+id;
         assertEquals(200, call(path, client, "PATCH", "{\"text\":\"Corrigida antes de apagar\"}").statusCode());
         var clientEvents=new LinkedBlockingQueue<String>();

@@ -19,7 +19,7 @@ for attempt in range(30):
     try:
         code, body = request("/v3/api-docs")
         paths = json.loads(body).get("paths", {}) if code == 200 else {}
-        if "/api/support/{id}/close" in paths and "/api/support/{id}/history" in paths:
+        if "delete" in paths.get("/api/users/me/fcm-token", {}):
             break
         print(f"Waiting for updated API deployment ({attempt + 1}/30)", flush=True)
     except Exception as error:

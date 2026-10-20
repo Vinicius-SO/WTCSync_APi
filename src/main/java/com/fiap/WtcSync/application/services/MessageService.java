@@ -129,9 +129,13 @@ public class MessageService {
     }
 
     public MessageResponseDTO updateStatus(String id, MessageStatus status) {
+        if (status != MessageStatus.ENTREGUE && status != MessageStatus.LIDO)
+            throw new IllegalArgumentException("Only delivery and read acknowledgements are allowed");
         messageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Message not found: " + id));
-        return toResponseDTO(messageRepository.updateStatus(id, status));
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND));
+        var updated = messageRepository.updateStatus(id, status);
+        if (updated == null) throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND);
+        return toResponseDTO(updated);
     }
 
     private MessageResponseDTO toResponseDTO(Message message) {

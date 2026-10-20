@@ -89,9 +89,14 @@ public class MessageRepository implements IMessageRepository {
 
     @Override
     public Message updateStatus(String id, MessageStatus status) {
-        Query query = new Query(Criteria.where("_id").is(id).and("deleted").ne(true));
-        Update update = new Update().set("status", status);
-        mongoTemplate.updateFirst(query, update, Message.class);
-        return mongoTemplate.findOne(query, Message.class);
+        if (status != MessageStatus.ENTREGUE && status != MessageStatus.LIDO)
+            throw new IllegalArgumentException("Invalid receipt");
+        var previous = status == MessageStatus.LIDO
+                ? List.of(MessageStatus.ENVIADO, MessageStatus.ENTREGUE)
+                : List.of(MessageStatus.ENVIADO);
+        Query query = new Query(Criteria.where("_id").is(id).and("deleted").ne(true).and("status").in(previous));
+        // Conditional update makes concurrent delivery/read acknowledgements monotonic.
+        mongoTemplate.updateFirst(query, new Update().set("status", status), Message.class);
+        return findById(id).orElse(null);
     }
 }
