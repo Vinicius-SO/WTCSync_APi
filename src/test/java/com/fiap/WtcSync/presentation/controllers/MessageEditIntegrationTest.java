@@ -50,6 +50,8 @@ class MessageEditIntegrationTest {
         String customer=clientId(client); clientId(other);
         JsonObject original=send(customer, client);
         String id=original.get("id").getAsString(), path="/messages/"+id;
+        // Mongo stores timestamps with millisecond precision; compare persisted values.
+        original=json(call(path, client, "GET", null));
         assertEquals(200, call(path, client, "PATCH", "{\"text\":\"Texto original\"}").statusCode());
         var unchanged=json(call(path, client, "GET", null));
         assertTrue(!unchanged.has("editedAt") || unchanged.get("editedAt").isJsonNull());

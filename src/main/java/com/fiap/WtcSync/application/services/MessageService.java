@@ -29,7 +29,7 @@ public class MessageService {
 
     public MessageResponseDTO getMessageById(String id) {
         Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Message not found"));
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Message not found: " + id));
         return toResponseDTO(message);
     }
 
