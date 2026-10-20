@@ -36,6 +36,7 @@ public class SecurityConfig {
             .requestMatchers("/ws/support").hasAnyAuthority("CLIENT", "OPERATOR", "ATENDENTE")
             .requestMatchers("/api/support/queue", "/api/support/*/claim", "/api/support/*/release").hasAnyAuthority("OPERATOR", "ATENDENTE")
             .requestMatchers("/api/support/*").hasAnyAuthority("CLIENT", "OPERATOR", "ATENDENTE")
+            .requestMatchers("/api/campaigns/me/latest").hasAuthority("CLIENT")
             .requestMatchers("/api/clients/me").hasAuthority("CLIENT")
             .requestMatchers("/messages/**", "/inbox/**", "/conversation").hasAnyAuthority("CLIENT", "OPERATOR", "ATENDENTE")
             .requestMatchers("/api/clients/**").hasAnyAuthority("OPERATOR", "ATENDENTE")

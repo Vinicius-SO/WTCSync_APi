@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface ICampaignRepository {
 
     List<Campaign> findAll();
+    Optional<Campaign> findLatestReceived(String email);
     Optional<Campaign> findById(String id);
     Campaign save(Campaign campaign);
     void deleteById(String id);
