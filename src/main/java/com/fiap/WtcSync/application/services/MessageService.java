@@ -21,6 +21,7 @@ public class MessageService {
     }
 
     public MessageResponseDTO sendMessage(MessageDTO dto) {
+        validateSend(dto);
         deeplinkValidator.validateActionUrls(dto.actionUrls());
         Message message = new Message(dto.senderId(), dto.customerId(), dto.text(), MessageStatus.ENVIADO);
         message.setActionUrls(dto.actionUrls());
@@ -36,6 +37,7 @@ public class MessageService {
     }
 
     public java.util.Optional<MessageResponseDTO> findPreviouslySent(MessageDTO dto) {
+        validateSend(dto);
         if (dto.clientMessageId() == null) return java.util.Optional.empty();
         return messageRepository.findSendById(sendId(dto)).map(message -> checkedReceipt(message, dto));
     }
@@ -48,6 +50,14 @@ public class MessageService {
             throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.GONE,
                     "Message was already sent and deleted");
         return toResponseDTO(message);
+    }
+
+    private void validateSend(MessageDTO dto) {
+        if (dto.text() == null || dto.text().isBlank())
+            throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST, "Message text is required");
+        if (dto.clientMessageId() != null && !dto.clientMessageId().matches(
+                "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"))
+            throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST, "Invalid clientMessageId");
     }
 
     private String sendId(MessageDTO dto) {

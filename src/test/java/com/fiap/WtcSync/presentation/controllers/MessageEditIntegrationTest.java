@@ -236,6 +236,7 @@ class MessageEditIntegrationTest {
         assertEquals(json(first).get("id"), json(retry).get("id"));
         assertEquals(409, call("/messages", operator, "POST", keyedBody(customer, operator, "Nova resposta", UUID.randomUUID().toString())).statusCode());
         assertEquals(400, call("/messages", client, "POST", keyedBody(customer, client, "Invalid UUID", "invalid")).statusCode());
+        assertEquals(400, call("/messages", client, "POST", keyedBody(customer, client, "   ", UUID.randomUUID().toString())).statusCode());
     }
     WebSocket connect(String token, BlockingQueue<String> messages) {
         return http.newWebSocketBuilder().header("Authorization", "Bearer "+token)
