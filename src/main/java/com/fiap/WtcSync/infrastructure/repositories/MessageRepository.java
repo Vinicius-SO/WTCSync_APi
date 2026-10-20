@@ -49,6 +49,16 @@ public class MessageRepository implements IMessageRepository {
     }
 
     @Override
+    public Optional<Message> updateText(String id, String authorEmail, String text, java.time.LocalDateTime editedAt) {
+        Query query = new Query(Criteria.where("_id").is(id).and("senderId")
+                .regex("^" + java.util.regex.Pattern.quote(authorEmail) + "$", "i"));
+        // Update only text metadata, preserving concurrent delivery/read status changes.
+        Update update = new Update().set("text", text).set("editedAt", editedAt).set("updatedAt", editedAt);
+        return Optional.ofNullable(mongoTemplate.findAndModify(query, update,
+                org.springframework.data.mongodb.core.FindAndModifyOptions.options().returnNew(true), Message.class));
+    }
+
+    @Override
     public Message updateStatus(String id, MessageStatus status) {
         Query query = new Query(Criteria.where("_id").is(id));
         Update update = new Update().set("status", status);

@@ -18,6 +18,10 @@ public class Message {
     private String text;
     private MessageStatus status;
     private Map<String, String> actionUrls;
+    private LocalDateTime editedAt;
+
+    public LocalDateTime getEditedAt() { return editedAt; }
+    public void setEditedAt(LocalDateTime editedAt) { this.editedAt = editedAt; }
 
     @CreatedDate
     private LocalDateTime createdAt;

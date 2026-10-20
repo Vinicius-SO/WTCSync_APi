@@ -29,7 +29,7 @@ public class MessageService {
 
     public MessageResponseDTO getMessageById(String id) {
         Message message = messageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Message not found: " + id));
+                .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Message not found"));
         return toResponseDTO(message);
     }
 
@@ -43,6 +43,20 @@ public class MessageService {
         return messageRepository.findBySenderIdAndCustomerId(senderId, customerId).stream()
                 .map(this::toResponseDTO)
                 .toList();
+    }
+
+    public MessageResponseDTO editMessage(String id, String authorEmail, String text) {
+        Message message = messageRepository.findById(id).orElseThrow(() ->
+                new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND));
+        if (message.getSenderId() == null || !message.getSenderId().equalsIgnoreCase(authorEmail))
+            throw new org.springframework.security.access.AccessDeniedException("Only the author can edit a message");
+        if (text == null || text.isBlank())
+            throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST);
+        // No-op saves must not mark an unchanged message as edited.
+        if (text.equals(message.getText())) return toResponseDTO(message);
+        return toResponseDTO(messageRepository.updateText(id, authorEmail, text,
+                java.time.LocalDateTime.now(java.time.Clock.systemUTC())).orElseThrow(() ->
+                new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND)));
     }
 
     public MessageResponseDTO updateStatus(String id, MessageStatus status) {
@@ -60,7 +74,8 @@ public class MessageService {
                 message.getStatus(),
                 message.getActionUrls(),
                 message.getCreatedAt(),
-                message.getUpdatedAt()
+                message.getUpdatedAt(),
+                message.getEditedAt()
         );
     }
 }

@@ -90,6 +90,17 @@ public class MessageController {
         return ResponseEntity.ok(messageService.getInbox(customerId));
     }
 
+    @PatchMapping("/messages/{id}")
+    @Operation(summary = "Edit own message text", description = "Only the authenticated author can edit the text; original timestamp and delivery status are preserved")
+    public ResponseEntity<MessageResponseDTO> editMessage(@PathVariable String id,
+            @Valid @RequestBody com.fiap.WtcSync.application.dtos.EditMessageDTO body) {
+        var message = messageService.getMessageById(id);
+        access.requireConversation(message.customerId());
+        var updated = messageService.editMessage(id, access.email(), body.text());
+        events.publish(updated.customerId());
+        return ResponseEntity.ok(updated);
+    }
+
     @PatchMapping("/messages/{id}/status")
     @Operation(summary = "Update message status", description = "Updates the delivery status of a message (ENVIADO, ENTREGUE, LIDO, FALHA)")
     @ApiResponses(value = {
