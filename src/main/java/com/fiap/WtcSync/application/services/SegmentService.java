@@ -57,7 +57,7 @@ public class SegmentService {
                 .map(c -> new ClientResponseDTO(
                         c.getId(), c.getName(), c.getEmail(), c.getPhone(),
                         c.getStatus(), c.getScore(), c.getTags(), c.getSegmentId(),
-                        c.getCreatedAt(), c.getUpdatedAt()))
+                        c.getCreatedAt(), c.getUpdatedAt(), c.getNotes()))
                 .toList();
     }
 

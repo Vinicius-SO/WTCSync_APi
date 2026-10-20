@@ -15,5 +15,6 @@ public record ClientResponseDTO(
     List<String> tags,
     String segmentId,
     LocalDateTime createdAt,
-    LocalDateTime updatedAt
+    LocalDateTime updatedAt,
+    String notes
 ) {}

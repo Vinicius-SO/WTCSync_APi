@@ -33,6 +33,11 @@ public class SupportQueueService implements org.springframework.boot.Application
             if (id != null && clients.findById(id).isPresent()) open(id);
         }
     }
+    public void refreshClient(String id) {
+        var client = clients.findById(id).orElseThrow();
+        mongo.updateFirst(Query.query(Criteria.where("_id").is(id)),
+            new Update().set("customerName", client.getName()).set("customerEmail", client.getEmail()), Ticket.class);
+    }
     public Ticket open(String id) {
         var client = clients.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return mongo.findAndModify(Query.query(Criteria.where("_id").is(id)),

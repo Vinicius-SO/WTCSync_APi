@@ -68,6 +68,13 @@ public class ClientController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualiza dados do cliente e preserva seu atendimento")
+    public ResponseEntity<ClientResponseDTO> updateClient(@PathVariable String id, @RequestBody ClientRequestDTO dto,
+            Authentication authentication) {
+        return ResponseEntity.ok(clientService.updateClient(id, dto, authentication.getName()));
+    }
+
     @PostMapping
     @Operation(summary = "Cria cliente", description = "Cria um novo cliente no sistema")
     @ApiResponses(value = {

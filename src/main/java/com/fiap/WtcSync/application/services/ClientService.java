@@ -19,14 +19,20 @@ public class ClientService {
     private final IMessageRepository messageRepository;
     private final AuditLogService auditLogService;
 
-    public ClientService(IClientRepository clientRepository, IMessageRepository messageRepository, AuditLogService auditLogService) {
+    private final com.fiap.WtcSync.domain.interfaces.IUserRepository users;
+    private final SupportQueueService queue;
+    private final SupportEvents events;
+
+    public ClientService(IClientRepository clientRepository, IMessageRepository messageRepository, AuditLogService auditLogService,
+            com.fiap.WtcSync.domain.interfaces.IUserRepository users, SupportQueueService queue, SupportEvents events) {
+        this.users = users; this.queue = queue; this.events = events;
         this.clientRepository = clientRepository;
         this.messageRepository = messageRepository;
         this.auditLogService = auditLogService;
     }
 
     public ClientResponseDTO getOrCreateForAccount(String email) {
-        return toResponse(clientRepository.findOrCreateForAccount(email, email));
+        return toResponse(clientRepository.findOrCreateForAccount(email, email), false);
     }
 
     public List<ClientResponseDTO> listClients(String tag, Integer score, String status, String segmentId) {
@@ -44,14 +50,17 @@ public class ClientService {
     }
 
     public ClientResponseDTO createClient(ClientRequestDTO dto, String performedBy) {
+        validate(dto);
+        ensureAvailableEmail(dto.email().trim(), null);
         Client client = new Client();
-        client.setName(dto.name());
-        client.setEmail(dto.email());
+        client.setName(dto.name().trim());
+        client.setEmail(dto.email().trim());
         client.setPhone(dto.phone());
-        client.setStatus(dto.status() != null ? dto.status() : "active");
+        client.setStatus(dto.status() != null ? dto.status().toLowerCase(java.util.Locale.ROOT) : "active");
         client.setScore(dto.score() != null ? dto.score() : 0);
         client.setTags(dto.tags());
         client.setSegmentId(dto.segmentId());
+        client.setNotes(dto.notes());
 
         Client saved = clientRepository.save(client);
 
@@ -59,6 +68,46 @@ public class ClientService {
                 "Cliente criado: " + saved.getName());
 
         return toResponse(saved);
+    }
+
+    public ClientResponseDTO updateClient(String id, ClientRequestDTO dto, String performedBy) {
+        validate(dto);
+        Client client = clientRepository.findById(id).orElseThrow(() ->
+            new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Cliente não encontrado"));
+        String email = dto.email().trim();
+        // The email is the existing account-to-conversation link. A CRM edit cannot move that identity.
+        if (!email.equalsIgnoreCase(client.getEmail()) && client.getEmail() != null && users.findByEmail(client.getEmail()).isPresent())
+            throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.CONFLICT,
+                "O e-mail de acesso não pode ser alterado pelo CRM");
+        ensureAvailableEmail(email, id);
+        client.setName(dto.name().trim());
+        client.setEmail(email);
+        client.setPhone(dto.phone());
+        if (dto.status() != null) client.setStatus(dto.status().toLowerCase(java.util.Locale.ROOT));
+        if (dto.score() != null) client.setScore(dto.score());
+        if (dto.tags() != null) client.setTags(dto.tags());
+        if (dto.segmentId() != null) client.setSegmentId(dto.segmentId());
+        client.setNotes(dto.notes());
+        Client saved = clientRepository.save(client);
+        queue.refreshClient(id);
+        auditLogService.log("UPDATE_CLIENT", "Client", id, performedBy, "Dados do cliente atualizados");
+        events.publish(id);
+        return toResponse(saved);
+    }
+
+    private void ensureAvailableEmail(String email, String id) {
+        clientRepository.findByEmail(email).filter(c -> !c.getId().equals(id)).ifPresent(c -> {
+            throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.CONFLICT,
+                "E-mail já vinculado a outro cliente");
+        });
+    }
+
+    private void validate(ClientRequestDTO dto) {
+        if (dto.name() == null || dto.name().isBlank() || dto.email() == null ||
+                !dto.email().trim().matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$") ||
+                (dto.score() != null && (dto.score() < 0 || dto.score() > 100)))
+            throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.BAD_REQUEST,
+                "Informe nome, e-mail válido e score entre 0 e 100");
     }
 
     public Optional<ClientProfileDTO> getProfile(String clientId) {
@@ -80,11 +129,12 @@ public class ClientService {
         });
     }
 
-    private ClientResponseDTO toResponse(Client client) {
+    private ClientResponseDTO toResponse(Client client) { return toResponse(client, true); }
+    private ClientResponseDTO toResponse(Client client, boolean includeNotes) {
         return new ClientResponseDTO(
             client.getId(), client.getName(), client.getEmail(), client.getPhone(),
             client.getStatus(), client.getScore(), client.getTags(), client.getSegmentId(),
-            client.getCreatedAt(), client.getUpdatedAt()
+            client.getCreatedAt(), client.getUpdatedAt(), includeNotes ? client.getNotes() : null
         );
     }
 }
