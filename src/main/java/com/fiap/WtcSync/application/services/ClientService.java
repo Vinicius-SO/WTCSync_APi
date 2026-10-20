@@ -122,7 +122,7 @@ public class ClientService {
                     .map(m -> new MessageResponseDTO(
                             m.getId(), m.getSenderId(), m.getCustomerId(),
                             m.getText(), m.getStatus(), m.getActionUrls(),
-                            m.getCreatedAt(), m.getUpdatedAt()))
+                            m.getCreatedAt(), m.getUpdatedAt(), m.getEditedAt()))
                     .toList();
 
             return new ClientProfileDTO(clientDTO, lastMessages, List.of());

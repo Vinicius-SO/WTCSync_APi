@@ -11,5 +11,6 @@ public interface IMessageRepository {
     Optional<Message> findById(String id);
     List<Message> findByCustomerId(String customerId);
     List<Message> findBySenderIdAndCustomerId(String senderId, String customerId);
+    Optional<Message> updateText(String id, String authorEmail, String text, java.time.LocalDateTime editedAt);
     Message updateStatus(String id, MessageStatus status);
 }
