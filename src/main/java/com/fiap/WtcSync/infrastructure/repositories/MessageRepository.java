@@ -27,14 +27,28 @@ public class MessageRepository implements IMessageRepository {
     }
 
     @Override
+    public Optional<Message> findSendById(String id) {
+        return Optional.ofNullable(mongoTemplate.findById(id, Message.class));
+    }
+
+    @Override
+    public Message insertOnce(Message message) {
+        try {
+            return mongoTemplate.insert(message);
+        } catch (org.springframework.dao.DuplicateKeyException duplicate) {
+            return findSendById(message.getId()).orElseThrow(() -> duplicate);
+        }
+    }
+
+    @Override
     public Optional<Message> findById(String id) {
-        Query query = new Query(Criteria.where("_id").is(id));
+        Query query = new Query(Criteria.where("_id").is(id).and("deleted").ne(true));
         return Optional.ofNullable(mongoTemplate.findOne(query, Message.class));
     }
 
     @Override
     public List<Message> findByCustomerId(String customerId) {
-        Query query = new Query(Criteria.where("customerId").is(customerId))
+        Query query = new Query(Criteria.where("customerId").is(customerId).and("deleted").ne(true))
                 .with(org.springframework.data.domain.Sort.by("createdAt", "id"));
         return mongoTemplate.find(query, Message.class);
     }
@@ -42,7 +56,7 @@ public class MessageRepository implements IMessageRepository {
     @Override
     public List<Message> findBySenderIdAndCustomerId(String senderId, String customerId) {
         Query query = new Query(
-            Criteria.where("senderId").is(senderId)
+            Criteria.where("senderId").is(senderId).and("deleted").ne(true)
                     .and("customerId").is(customerId)
         );
         return mongoTemplate.find(query, Message.class);
@@ -50,7 +64,7 @@ public class MessageRepository implements IMessageRepository {
 
     @Override
     public Optional<Message> updateText(String id, String authorEmail, String text, java.time.LocalDateTime editedAt) {
-        Query query = new Query(Criteria.where("_id").is(id).and("senderId")
+        Query query = new Query(Criteria.where("_id").is(id).and("deleted").ne(true).and("senderId")
                 .regex("^" + java.util.regex.Pattern.quote(authorEmail) + "$", "i"));
         // Update only text metadata, preserving concurrent delivery/read status changes.
         Update update = new Update().set("text", text).set("editedAt", editedAt).set("updatedAt", editedAt);
@@ -60,14 +74,22 @@ public class MessageRepository implements IMessageRepository {
 
     @Override
     public boolean deleteByAuthor(String id, String authorEmail) {
-        Query query = new Query(Criteria.where("_id").is(id).and("senderId")
+        Query query = new Query(Criteria.where("_id").is(id).and("deleted").ne(true).and("senderId")
                 .regex("^" + java.util.regex.Pattern.quote(authorEmail) + "$", "i"));
+        // Keep only a receipt for keyed sends so delayed retries cannot recreate deleted text.
+        Query keyed = new Query(Criteria.where("_id").is(id).and("deleted").ne(true)
+                .and("senderId").regex("^" + java.util.regex.Pattern.quote(authorEmail) + "$", "i")
+                .and("clientMessageId").ne(null));
+        Update erase = new Update().set("deleted", true).unset("text").unset("actionUrls").unset("editedAt");
+        if (mongoTemplate.updateFirst(keyed, erase, Message.class).getModifiedCount() == 1) return true;
+        // Older clients did not use send receipts and retain their original deletion behavior.
+        query.addCriteria(Criteria.where("clientMessageId").is(null));
         return mongoTemplate.remove(query, Message.class).getDeletedCount() == 1;
     }
 
     @Override
     public Message updateStatus(String id, MessageStatus status) {
-        Query query = new Query(Criteria.where("_id").is(id));
+        Query query = new Query(Criteria.where("_id").is(id).and("deleted").ne(true));
         Update update = new Update().set("status", status);
         mongoTemplate.updateFirst(query, update, Message.class);
         return mongoTemplate.findOne(query, Message.class);

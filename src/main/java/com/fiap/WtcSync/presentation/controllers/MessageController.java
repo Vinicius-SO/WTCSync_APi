@@ -42,9 +42,17 @@ public class MessageController {
     })
     public ResponseEntity<MessageResponseDTO> sendMessage(@Valid @RequestBody MessageDTO dto) {
         access.requireConversation(dto.customerId());
+        MessageDTO request = new MessageDTO(access.email(), dto.customerId(), dto.text(), dto.actionUrls(), dto.clientMessageId());
+        if (dto.clientMessageId() != null) {
+            // Reject a queued request if the app switched accounts before it reached the interceptor.
+            if (!access.email().equalsIgnoreCase(dto.senderId()))
+                throw new org.springframework.security.access.AccessDeniedException("Queued message belongs to a different account");
+            var previous = messageService.findPreviouslySent(request);
+            if (previous.isPresent()) return ResponseEntity.status(HttpStatus.CREATED).body(previous.get());
+        }
         if (access.isStaff()) queue.requireOwner(dto.customerId(), access.email());
         else queue.open(dto.customerId());
-        MessageResponseDTO response = messageService.sendMessage(new MessageDTO(access.email(), dto.customerId(), dto.text(), dto.actionUrls()));
+        MessageResponseDTO response = messageService.sendMessage(request);
         events.publish(dto.customerId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

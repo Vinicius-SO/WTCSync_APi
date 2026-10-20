@@ -33,5 +33,7 @@ public record MessageResponseDTO(
         LocalDateTime updatedAt,
 
         @Schema(description = "Timestamp of the last text edit; null for unedited messages")
-        LocalDateTime editedAt
+        LocalDateTime editedAt,
+
+        String clientMessageId
 ) {}

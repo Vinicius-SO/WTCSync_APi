@@ -20,5 +20,13 @@ public record MessageDTO(
         String text,
 
         @Schema(description = "URLs de ação para botões da mensagem", example = "{\"btn1\": \"wtcapp://events/123\"}")
-        Map<String, String> actionUrls
-) {}
+        Map<String, String> actionUrls,
+
+        @Schema(description = "Stable UUID reused when retrying the same send")
+        @jakarta.validation.constraints.Pattern(regexp = "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
+        String clientMessageId
+) {
+    public MessageDTO(String senderId, String customerId, String text, Map<String, String> actionUrls) {
+        this(senderId, customerId, text, actionUrls, null);
+    }
+}

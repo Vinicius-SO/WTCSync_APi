@@ -171,6 +171,72 @@ class MessageEditIntegrationTest {
         assertEquals(403, call(ownPath, operator, "DELETE", null).statusCode());
         assertEquals(204, call(ownPath, attendant, "DELETE", null).statusCode());
     }
+    String keyedBody(String customer, String token, String text, String sendId) {
+        var body=new JsonObject();
+        body.addProperty("senderId", tokens.getUsernameFromToken(token));
+        body.addProperty("customerId", customer); body.addProperty("text", text);
+        body.addProperty("clientMessageId", sendId);
+        return body.toString();
+    }
+    @Test void concurrentRetriesCreateOneMessageAndNeverOverwriteEditsOrRecreateDeletedText() throws Exception {
+        String client=account("CLIENT"), operator=account("OPERATOR"), other=account("CLIENT");
+        String customer=clientId(client), otherCustomer=clientId(other), sendId=UUID.randomUUID().toString();
+        String body=keyedBody(customer, client, "Envio confiável", sendId);
+        var ids=new HashSet<String>();
+        try (var executor=Executors.newFixedThreadPool(6)) {
+            var start=new CountDownLatch(1);
+            var requests=new ArrayList<Future<HttpResponse<String>>>();
+            for (int i=0; i<6; i++) requests.add(executor.submit(() -> { start.await(); return call("/messages", client, "POST", body); }));
+            start.countDown();
+            for (var future : requests) {
+                var response=future.get(10, TimeUnit.SECONDS);
+                assertEquals(201, response.statusCode(), response.body());
+                assertEquals(sendId, json(response).get("clientMessageId").getAsString());
+                assertFalse(json(response).get("createdAt").isJsonNull());
+                ids.add(json(response).get("id").getAsString());
+            }
+        }
+        assertEquals(1, ids.size());
+        assertEquals(1, JsonParser.parseString(call("/inbox/"+customer, client, "GET", null).body()).getAsJsonArray().size());
+        String id=ids.iterator().next(), path="/messages/"+id;
+        // A lost response can be recovered with the original request, not another insertion.
+        assertEquals(id, json(call("/messages", client, "POST", body)).get("id").getAsString());
+        assertEquals(409, call("/messages", client, "POST", keyedBody(customer, client, "Different content", sendId)).statusCode());
+        assertEquals(200, call(path, client, "PATCH", "{\"text\":\"Texto corrigido\"}").statusCode());
+        var retry=call("/messages", client, "POST", body);
+        assertEquals(201, retry.statusCode(), retry.body());
+        assertEquals("Texto corrigido", json(retry).get("text").getAsString());
+        assertEquals(403, call("/messages", other, "POST", body).statusCode());
+        // The same UUID is isolated by the original sender and conversation.
+        var otherBody=keyedBody(otherCustomer, other, "Other account", sendId);
+        var otherResponse=call("/messages", other, "POST", otherBody);
+        assertEquals(201, otherResponse.statusCode(), otherResponse.body());
+        assertNotEquals(id, json(otherResponse).get("id").getAsString());
+        var spoof=JsonParser.parseString(otherBody).getAsJsonObject();
+        spoof.addProperty("senderId", tokens.getUsernameFromToken(client));
+        assertEquals(403, call("/messages", other, "POST", spoof.toString()).statusCode());
+        assertEquals(204, call(path, client, "DELETE", null).statusCode());
+        assertEquals(410, call("/messages", client, "POST", body).statusCode());
+        assertEquals(404, call(path, client, "GET", null).statusCode());
+        assertEquals(404, call(path, client, "PATCH", "{\"text\":\"Restore\"}").statusCode());
+        assertEquals(404, call(path+"/status", operator, "PATCH", "{\"status\":\"LIDO\"}").statusCode());
+        assertEquals(0, JsonParser.parseString(call("/inbox/"+customer, operator, "GET", null).body()).getAsJsonArray().size());
+        assertFalse(call("/api/clients/"+customer+"/profile", operator, "GET", null).body().contains(id));
+    }
+    @Test void staffCanRecoverAnAcknowledgementAfterOwnershipChangesButCannotSendAnotherMessage() throws Exception {
+        String client=account("CLIENT"), operator=account("OPERATOR");
+        String customer=clientId(client), sendId=UUID.randomUUID().toString();
+        assertEquals(200, call("/api/support/"+customer+"/claim", operator, "POST", "{}").statusCode());
+        String body=keyedBody(customer, operator, "Resposta", sendId);
+        var first=call("/messages", operator, "POST", body);
+        assertEquals(201, first.statusCode(), first.body());
+        assertEquals(200, call("/api/support/"+customer+"/release", operator, "POST", "{}").statusCode());
+        var retry=call("/messages", operator, "POST", body);
+        assertEquals(201, retry.statusCode(), retry.body());
+        assertEquals(json(first).get("id"), json(retry).get("id"));
+        assertEquals(409, call("/messages", operator, "POST", keyedBody(customer, operator, "Nova resposta", UUID.randomUUID().toString())).statusCode());
+        assertEquals(400, call("/messages", client, "POST", keyedBody(customer, client, "Invalid UUID", "invalid")).statusCode());
+    }
     WebSocket connect(String token, BlockingQueue<String> messages) {
         return http.newWebSocketBuilder().header("Authorization", "Bearer "+token)
             .buildAsync(URI.create("ws://localhost:"+port+"/ws/support"), new WebSocket.Listener() {

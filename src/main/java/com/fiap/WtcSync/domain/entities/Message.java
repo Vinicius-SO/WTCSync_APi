@@ -19,6 +19,16 @@ public class Message {
     private MessageStatus status;
     private Map<String, String> actionUrls;
     private LocalDateTime editedAt;
+    private String clientMessageId;
+    private String requestHash;
+    private boolean deleted;
+
+    public String getClientMessageId() { return clientMessageId; }
+    public void setClientMessageId(String value) { clientMessageId = value; }
+    public String getRequestHash() { return requestHash; }
+    public void setRequestHash(String value) { requestHash = value; }
+    public boolean isDeleted() { return deleted; }
+    public void setDeleted(boolean value) { deleted = value; }
 
     public LocalDateTime getEditedAt() { return editedAt; }
     public void setEditedAt(LocalDateTime editedAt) { this.editedAt = editedAt; }
