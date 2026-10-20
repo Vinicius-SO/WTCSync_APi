@@ -4,8 +4,6 @@ import com.fiap.WtcSync.application.dtos.MessageResponseDTO;
 import com.fiap.WtcSync.domain.entities.User;
 import com.fiap.WtcSync.domain.interfaces.IUserRepository;
 import com.google.firebase.messaging.*;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -15,29 +13,46 @@ public class ChatNotifications {
     private final SupportQueueService queue;
     private final IUserRepository users;
     private final PushDevices devices;
-    private final TaskExecutor executor;
     private final ChatPushGateway gateway;
-    public ChatNotifications(SupportQueueService queue, IUserRepository users, PushDevices devices,
-            @Qualifier("chatPushExecutor") TaskExecutor executor, ChatPushGateway gateway) {
-        this.queue = queue; this.users = users; this.devices = devices; this.executor = executor; this.gateway = gateway;
+    public ChatNotifications(SupportQueueService queue, IUserRepository users, PushDevices devices, ChatPushGateway gateway) {
+        this.queue = queue; this.users = users; this.devices = devices; this.gateway = gateway;
     }
-    public void notifyNew(MessageResponseDTO message) {
-        if (message == null) return;
-        try { executor.execute(() -> {
-            try {
-                var ticket = queue.get(message.customerId());
-                for (var user : recipients(message, ticket, users.findActiveStaff())) {
-                    for (var device : devices.forEmail(user.getEmail())) {
-                        try { gateway.send(device.token, user.getEmail(), message.customerId(), message.id());
-                        } catch (FirebaseMessagingException ex) {
-                            if (ex.getMessagingErrorCode() == MessagingErrorCode.UNREGISTERED)
-                                devices.revoke(user.getEmail(), device.token);
-                            else log.warn("Chat push delivery failed: {}", ex.getMessagingErrorCode());
-                        } catch (Exception ex) { log.warn("Chat push unavailable: {}", ex.getClass().getSimpleName()); }
-                    }
-                }
-            } catch (Exception ex) { log.warn("Chat notification unavailable: {}", ex.getClass().getSimpleName()); }
-        }); } catch (RuntimeException ex) { log.warn("Chat push queue unavailable"); }
+    public boolean deliver(com.fiap.WtcSync.domain.entities.Message message,
+            java.util.function.Consumer<String> acknowledged, java.util.function.BooleanSupplier stillOwned) {
+        var response = new MessageResponseDTO(message.getId(), message.getSenderId(), message.getCustomerId(),
+            message.getText(), message.getStatus(), message.getActionUrls(), message.getCreatedAt(),
+            message.getUpdatedAt(), message.getEditedAt(), message.getClientMessageId());
+        var ticket = queue.get(message.getCustomerId());
+        if (message.getSenderId().equalsIgnoreCase(ticket.customerEmail)) {
+            // Recover queue changes if the server stopped between saving the message and updating the ticket.
+            queue.onClientMessage(response);
+            ticket = queue.get(message.getCustomerId());
+        }
+        boolean success = true;
+        for (var user : recipients(response, ticket, users.findActiveStaff())) {
+            for (var device : devices.forEmail(user.getEmail())) {
+                if (!stillOwned.getAsBoolean()) return true;
+                String fingerprint = fingerprint(user.getEmail(), device.token);
+                if (message.getPush().sentDevices != null && message.getPush().sentDevices.contains(fingerprint)) continue;
+                try {
+                    gateway.send(device.token, user.getEmail(), message.getCustomerId(), message.getId());
+                    // Persist each accepted device before moving to the next; retries do not repeat successful deliveries.
+                    acknowledged.accept(fingerprint);
+                } catch (FirebaseMessagingException ex) {
+                    if (ex.getMessagingErrorCode() == MessagingErrorCode.UNREGISTERED) devices.revoke(user.getEmail(), device.token);
+                    else { success = false; log.warn("Chat push retained after provider failure: {}", ex.getMessagingErrorCode()); }
+                } catch (Exception ex) { success = false; log.warn("Chat push retained: {}", ex.getClass().getSimpleName()); }
+            }
+        }
+        return success;
+    }
+    static String fingerprint(String email, String token) {
+        try {
+            var digest = java.security.MessageDigest.getInstance("SHA-256");
+            digest.update(email.toLowerCase(java.util.Locale.ROOT).getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            digest.update((byte) 0);
+            return java.util.HexFormat.of().formatHex(digest.digest(token.getBytes(java.nio.charset.StandardCharsets.UTF_8)));
+        } catch (java.security.NoSuchAlgorithmException impossible) { throw new IllegalStateException(impossible); }
     }
     List<User> recipients(MessageResponseDTO message, SupportQueueService.Ticket ticket, List<User> staff) {
         if (!message.senderId().equalsIgnoreCase(ticket.customerEmail)) {

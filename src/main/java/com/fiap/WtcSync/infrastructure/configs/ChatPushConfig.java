@@ -2,6 +2,7 @@ package com.fiap.WtcSync.infrastructure.configs;
 import org.springframework.context.annotation.*;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Configuration
+@org.springframework.scheduling.annotation.EnableScheduling
 public class ChatPushConfig {
     @Bean("chatPushExecutor")
     public ThreadPoolTaskExecutor chatPushExecutor() {

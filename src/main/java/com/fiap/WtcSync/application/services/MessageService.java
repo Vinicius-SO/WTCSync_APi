@@ -25,6 +25,7 @@ public class MessageService {
         deeplinkValidator.validateActionUrls(dto.actionUrls());
         Message message = new Message(dto.senderId(), dto.customerId(), dto.text(), MessageStatus.ENVIADO);
         message.setActionUrls(dto.actionUrls());
+        message.setPush(new Message.PushDelivery(java.time.Instant.now()));
         if (dto.clientMessageId() == null) return toResponseDTO(messageRepository.save(message));
         var sentAt = java.time.LocalDateTime.now(java.time.Clock.systemUTC()).truncatedTo(java.time.temporal.ChronoUnit.MILLIS);
         message.setCreatedAt(sentAt);

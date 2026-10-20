@@ -36,6 +36,7 @@ public class HealthController {
         status.put("timestamp", LocalDateTime.now());
         status.put("application", "WTC Sync API");
         status.put("version", "1.0.0");
+        status.put("chatPushDelivery", "persistent-v1");
         return ResponseEntity.ok(status);
     }
 

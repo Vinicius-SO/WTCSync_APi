@@ -19,7 +19,8 @@ for attempt in range(30):
     try:
         code, body = request("/v3/api-docs")
         paths = json.loads(body).get("paths", {}) if code == 200 else {}
-        if "delete" in paths.get("/api/users/me/fcm-token", {}):
+        health_code, health_body = request("/api/health")
+        if "delete" in paths.get("/api/users/me/fcm-token", {}) and health_code == 200 and json.loads(health_body).get("chatPushDelivery") == "persistent-v1":
             break
         print(f"Waiting for updated API deployment ({attempt + 1}/30)", flush=True)
     except Exception as error:
