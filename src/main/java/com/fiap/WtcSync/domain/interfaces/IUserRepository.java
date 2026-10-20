@@ -11,6 +11,8 @@ public interface IUserRepository {
 
     User save(User user);
 
+    List<User> findActiveStaff();
+
     boolean existsByEmail(String email);
 
     List<User> findAllBySegmentIdAndFcmTokenNotNull(String segmentId);

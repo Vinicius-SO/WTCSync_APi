@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final com.fiap.WtcSync.application.services.PushDevices devices;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, com.fiap.WtcSync.application.services.PushDevices devices) {
         this.userService = userService;
+        this.devices = devices;
     }
 
     @PatchMapping("/me/fcm-token")
@@ -27,11 +29,14 @@ public class UserController {
         if (auth == null || !auth.isAuthenticated()) {
             return ResponseEntity.status(401).body("Authentication required");
         }
-        try {
-            userService.updateFcmToken(auth.getName(), dto.fcmToken());
-            return ResponseEntity.ok().build();
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(404).body(e.getMessage());
-        }
+        userService.updateFcmToken(auth.getName(), dto.fcmToken());
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/me/fcm-token")
+    @Operation(summary = "Remove this installation's push token from the authenticated account")
+    public ResponseEntity<Void> removeFcmToken(@RequestBody FcmTokenDTO dto, Authentication auth) {
+        devices.revoke(auth.getName(), dto.fcmToken());
+        return ResponseEntity.noContent().build();
     }
 }

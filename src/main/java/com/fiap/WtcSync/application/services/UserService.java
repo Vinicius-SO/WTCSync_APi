@@ -8,15 +8,16 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final IUserRepository userRepository;
+    private final PushDevices devices;
 
-    public UserService(IUserRepository userRepository) {
+    public UserService(IUserRepository userRepository, PushDevices devices) {
         this.userRepository = userRepository;
+        this.devices = devices;
     }
 
     public void updateFcmToken(String email, String fcmToken) {
         User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException("User not found"));
-        user.setFcmToken(fcmToken);
-        userRepository.save(user);
+        devices.register(email, fcmToken);
     }
 }

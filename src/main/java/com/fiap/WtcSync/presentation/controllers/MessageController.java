@@ -21,11 +21,14 @@ import java.util.Map;
 public class MessageController {
 
     private final MessageService messageService;
+    private final com.fiap.WtcSync.application.services.ChatNotifications notifications;
 
     private final com.fiap.WtcSync.application.services.AccountAccess access;
 
     public MessageController(MessageService messageService, com.fiap.WtcSync.application.services.AccountAccess access,
-            com.fiap.WtcSync.application.services.SupportQueueService queue, com.fiap.WtcSync.application.services.SupportEvents events) {
+            com.fiap.WtcSync.application.services.SupportQueueService queue, com.fiap.WtcSync.application.services.SupportEvents events,
+            com.fiap.WtcSync.application.services.ChatNotifications notifications) {
+        this.notifications = notifications;
         this.queue = queue; this.events = events;
         this.access = access;
         this.messageService = messageService;
@@ -57,6 +60,7 @@ public class MessageController {
         MessageResponseDTO response = messageService.sendMessage(request);
         if (!access.isStaff()) queue.onClientMessage(response);
         events.publish(dto.customerId());
+        notifications.notifyNew(response);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -123,7 +127,7 @@ public class MessageController {
     }
 
     @PatchMapping("/messages/{id}/status")
-    @Operation(summary = "Update message status", description = "Updates the delivery status of a message (ENVIADO, ENTREGUE, LIDO, FALHA)")
+    @Operation(summary = "Update message status", description = "Recipient acknowledges delivery or reading (ENTREGUE, LIDO); receipts never move backwards")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Status updated successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid status value"),
@@ -133,7 +137,17 @@ public class MessageController {
             @PathVariable String id,
             @RequestBody Map<String, String> body) {
         try {
-            access.requireConversation(messageService.getMessageById(id).customerId());
+            var message = messageService.getMessageById(id);
+            access.requireConversation(message.customerId());
+            // A receipt belongs to the recipient, never to the author or another staff member.
+            if (access.email().equalsIgnoreCase(message.senderId()))
+                throw new org.springframework.security.access.AccessDeniedException("Only the recipient can acknowledge a message");
+            if (access.isStaff()) {
+                var ticket = queue.get(message.customerId());
+                if (!access.email().equalsIgnoreCase(ticket.assignedTo) ||
+                        !message.senderId().equalsIgnoreCase(ticket.customerEmail))
+                    throw new org.springframework.security.access.AccessDeniedException("Only the responsible operator can acknowledge client messages");
+            }
             String statusStr = body.get("status");
             if (statusStr == null || statusStr.isBlank()) {
                 return ResponseEntity.badRequest().build();
