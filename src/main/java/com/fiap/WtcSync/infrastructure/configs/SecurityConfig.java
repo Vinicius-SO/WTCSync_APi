@@ -34,7 +34,7 @@ public class SecurityConfig {
             .requestMatchers("/api/health", "/api/deeplinks/routes").permitAll()
             .requestMatchers("/api/auth/me", "/api/auth/firebase-token", "/api/users/me/fcm-token").authenticated()
             .requestMatchers("/ws/support").hasAnyAuthority("CLIENT", "OPERATOR", "ATENDENTE")
-            .requestMatchers("/api/support/queue", "/api/support/*/claim", "/api/support/*/release").hasAnyAuthority("OPERATOR", "ATENDENTE")
+            .requestMatchers("/api/support/queue", "/api/support/*/claim", "/api/support/*/release", "/api/support/*/close", "/api/support/*/reopen", "/api/support/*/history").hasAnyAuthority("OPERATOR", "ATENDENTE")
             .requestMatchers("/api/support/*").hasAnyAuthority("CLIENT", "OPERATOR", "ATENDENTE")
             .requestMatchers("/api/campaigns/me/latest").hasAuthority("CLIENT")
             .requestMatchers("/api/clients/me").hasAuthority("CLIENT")
