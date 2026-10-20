@@ -30,19 +30,22 @@ public class CampaignService {
     private final AuditLogService auditLogService;
     private final DeeplinkValidator deeplinkValidator;
     private final NotificationService notificationService;
+    private final com.fiap.WtcSync.domain.interfaces.IClientRepository clientRepository;
 
     public CampaignService(ICampaignRepository campaignRepository,
                            ISegmentRepository segmentRepository,
                            IUserRepository userRepository,
                            AuditLogService auditLogService,
                            DeeplinkValidator deeplinkValidator,
-                           NotificationService notificationService) {
+                           NotificationService notificationService,
+                           com.fiap.WtcSync.domain.interfaces.IClientRepository clientRepository) {
         this.campaignRepository = campaignRepository;
         this.segmentRepository = segmentRepository;
         this.userRepository = userRepository;
         this.auditLogService = auditLogService;
         this.deeplinkValidator = deeplinkValidator;
         this.notificationService = notificationService;
+        this.clientRepository = clientRepository;
     }
 
     public List<CampaignResponseDTO> listCampaigns() {
@@ -124,6 +127,13 @@ public class CampaignService {
         Campaign campaign = campaignRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Campaign not found with id: " + id));
 
+        if (campaign.getStatus() == CampaignStatus.SENT) {
+            throw new IllegalStateException("Sent campaigns cannot be changed");
+        }
+        // Sending must go through sendCampaign so the audience is recorded.
+        if (dto.status() == CampaignStatus.SENT) {
+            throw new IllegalStateException("Use the send endpoint to dispatch a campaign");
+        }
         if (dto.status() != null) {
             validateStatusTransition(campaign.getStatus(), dto.status());
             campaign.setStatus(dto.status());
@@ -191,10 +201,27 @@ public class CampaignService {
                 .orElseThrow(() -> new RuntimeException("Segment not found: " + campaign.getSegmentId()));
 
         List<User> targets = userRepository.findAllBySegmentIdAndFcmTokenNotNull(campaign.getSegmentId());
-        int totalTargeted = targets.size();
+        var recipients = new java.util.LinkedHashMap<String, User>();
+        // CRM segment membership is the source of truth for in-app delivery.
+        for (var client : clientRepository.findByFilters(null, null, null, campaign.getSegmentId())) {
+            if (client.getEmail() == null || client.getEmail().isBlank()) continue;
+            String email = client.getEmail().toLowerCase(java.util.Locale.ROOT);
+            User user = userRepository.findByEmail(email).orElse(null);
+            if (user != null && (!"CLIENT".equals(user.getRole()) || !Boolean.TRUE.equals(user.getActive()))) continue;
+            recipients.put(email, user);
+        }
+        // Keep compatibility with accounts linked by the legacy user segment field.
+        for (User user : targets) {
+            if ("CLIENT".equals(user.getRole()) && Boolean.TRUE.equals(user.getActive()) && user.getEmail() != null)
+                recipients.putIfAbsent(user.getEmail().toLowerCase(java.util.Locale.ROOT), user);
+        }
+        targets = recipients.values().stream().filter(java.util.Objects::nonNull).toList();
+        int totalTargeted = recipients.size();
 
         NotificationService.BatchResult result = notificationService.sendBatch(targets, campaign);
 
+        campaign.setRecipientEmails(new ArrayList<>(recipients.keySet()));
+        campaign.setSentAt(LocalDateTime.now(java.time.Clock.systemUTC()));
         campaign.setStatus(CampaignStatus.SENT);
         campaign.setStats(new CampaignStats(
                 totalTargeted,
@@ -209,6 +236,13 @@ public class CampaignService {
                         totalTargeted, result.delivered(), result.failed(), result.skipped()));
 
         return toResponse(saved);
+    }
+
+    public Optional<com.fiap.WtcSync.application.dtos.ReceivedCampaignDTO> latestReceived(String email) {
+        return campaignRepository.findLatestReceived(email).map(c ->
+                new com.fiap.WtcSync.application.dtos.ReceivedCampaignDTO(c.getId(), c.getTitle(), c.getBody(),
+                        c.getMediaUrl(), c.getActions() == null ? List.of() : c.getActions(),
+                        c.getActionUrls() == null ? java.util.Map.of() : c.getActionUrls(), c.getSentAt()));
     }
 
     private void validateStatusTransition(CampaignStatus current, CampaignStatus next) {

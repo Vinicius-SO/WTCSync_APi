@@ -27,6 +27,14 @@ public class Campaign {
     private CampaignStats stats;
     private String createdBy;
     private LocalDateTime scheduledAt;
+    // Snapshot of the audience at dispatch, independent of later segment changes.
+    private List<String> recipientEmails;
+    private LocalDateTime sentAt;
+
+    public List<String> getRecipientEmails() { return recipientEmails; }
+    public void setRecipientEmails(List<String> value) { recipientEmails = value; }
+    public LocalDateTime getSentAt() { return sentAt; }
+    public void setSentAt(LocalDateTime value) { sentAt = value; }
 
     @CreatedDate
     private LocalDateTime createdAt;

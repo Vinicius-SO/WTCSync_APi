@@ -30,6 +30,17 @@ public class CampaignRepository implements ICampaignRepository {
     }
 
     @Override
+    public Optional<Campaign> findLatestReceived(String email) {
+        Query query = new Query(Criteria.where("recipientEmails").is(email.toLowerCase(java.util.Locale.ROOT))
+                .and("status").is(com.fiap.WtcSync.domain.enums.CampaignStatus.SENT)
+                .and("sentAt").ne(null));
+        query.with(org.springframework.data.domain.Sort.by(
+                org.springframework.data.domain.Sort.Order.desc("sentAt"),
+                org.springframework.data.domain.Sort.Order.desc("_id"))).limit(1);
+        return Optional.ofNullable(mongoTemplate.findOne(query, Campaign.class));
+    }
+
+    @Override
     public Campaign save(Campaign campaign) {
         return mongoTemplate.save(campaign);
     }

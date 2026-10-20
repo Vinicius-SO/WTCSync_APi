@@ -28,6 +28,13 @@ public class CampaignController {
         this.campaignService = campaignService;
     }
 
+    @GetMapping("/me/latest")
+    @Operation(summary = "Última campanha recebida pelo cliente autenticado")
+    public ResponseEntity<com.fiap.WtcSync.application.dtos.ReceivedCampaignDTO> latestReceived(Authentication auth) {
+        return campaignService.latestReceived(auth.getName())
+                .map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
+    }
+
     @GetMapping
     @Operation(summary = "Lista campanhas", description = "Lista todas as campanhas cadastradas")
     @ApiResponses(value = {
