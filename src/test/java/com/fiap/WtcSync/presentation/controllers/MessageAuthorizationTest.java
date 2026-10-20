@@ -12,7 +12,7 @@ class MessageAuthorizationTest {
     AccountAccess access = mock(AccountAccess.class);
     SupportQueueService queue = mock(SupportQueueService.class);
     SupportEvents events = mock(SupportEvents.class);
-    MessageController controller = new MessageController(service, access, queue, events, mock(ChatNotifications.class));
+    MessageController controller = new MessageController(service, access, queue, events, mock(ChatPushOutbox.class));
     @Test void senderComesFromAuthenticatedAccount() {
         when(access.email()).thenReturn("real@example.com");
         controller.sendMessage(new MessageDTO("spoofed@example.com", "own", "Hello", null));

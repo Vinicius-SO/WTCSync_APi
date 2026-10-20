@@ -18,7 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
     "spring.data.mongodb.uri=mongodb://localhost:27017/wtcsync_receipts_test",
     "spring.mongodb.uri=mongodb://localhost:27017/wtcsync_receipts_test",
-    "spring.mongodb.database=wtcsync_receipts_test"
+    "spring.mongodb.database=wtcsync_receipts_test",
+    "chat.push.enabled=false"
 })
 @EnabledIfEnvironmentVariable(named = "RUN_MONGO_INTEGRATION", matches = "true")
 class ReadNotificationsIntegrationTest {
@@ -45,6 +46,7 @@ class ReadNotificationsIntegrationTest {
     String send(String customer, String token) throws Exception {
         var response = call("/messages", token, "POST", "{\"senderId\":\"ignored\",\"customerId\":\""+customer+"\",\"text\":\"Confidencial\"}");
         assertEquals(201, response.statusCode(), response.body());
+        assertFalse(json(response).has("push"), "Internal push queue must not appear in message responses");
         return "/messages/"+json(response).get("id").getAsString();
     }
     int status(String path, String token, String status) throws Exception {

@@ -22,6 +22,21 @@ public class Message {
     private String clientMessageId;
     private String requestHash;
     private boolean deleted;
+    // Stored with the message in the same atomic insert; never included in response DTOs.
+    private PushDelivery push;
+    public PushDelivery getPush() { return push; }
+    public void setPush(PushDelivery value) { push = value; }
+    public static class PushDelivery {
+        public String state = "PENDING";
+        public int attempts;
+        public java.time.Instant queuedAt;
+        public java.time.Instant dueAt;
+        public java.time.Instant leaseUntil;
+        public String leaseId;
+        public java.util.Set<String> sentDevices = new java.util.HashSet<>();
+        public PushDelivery() {}
+        public PushDelivery(java.time.Instant now) { queuedAt = now; dueAt = now; }
+    }
 
     public String getClientMessageId() { return clientMessageId; }
     public void setClientMessageId(String value) { clientMessageId = value; }

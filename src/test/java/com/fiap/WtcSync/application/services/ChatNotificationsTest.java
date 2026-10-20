@@ -12,7 +12,7 @@ class ChatNotificationsTest {
     PushDevices devices = mock(PushDevices.class);
     SupportQueueService queue = mock(SupportQueueService.class);
     ChatPushGateway gateway = mock(ChatPushGateway.class);
-    ChatNotifications notifications = new ChatNotifications(queue, users, devices, Runnable::run, gateway);
+    ChatNotifications notifications = new ChatNotifications(queue, users, devices, gateway);
     User user(String email, String role) { return new User("Test", email, "unused", role); }
     MessageResponseDTO message(String sender) {
         return new MessageResponseDTO("message", sender, "customer", "Private text", MessageStatus.ENVIADO, null, null, null, null, null);
@@ -47,7 +47,15 @@ class ChatNotificationsTest {
         var b=new PushDevices.Device(); b.token="b"; b.email=owner.getEmail();
         when(devices.forEmail(owner.getEmail())).thenReturn(List.of(a,b));
         doThrow(new IllegalStateException("Firebase unavailable")).when(gateway).send(eq("a"), anyString(), anyString(), anyString());
-        assertDoesNotThrow(() -> notifications.notifyNew(message("client@example.invalid")));
-        verify(gateway).send("b", owner.getEmail(), "customer", "message");
+        var pending = new Message("client@example.invalid", "customer", "Private text", MessageStatus.ENVIADO);
+        pending.setId("message"); pending.setPush(new Message.PushDelivery(java.time.Instant.now()));
+        var acknowledged = new java.util.HashSet<String>();
+        assertFalse(notifications.deliver(pending, acknowledged::add, () -> true));
+        assertEquals(java.util.Set.of(ChatNotifications.fingerprint(owner.getEmail(), "b")), acknowledged);
+        pending.getPush().sentDevices = acknowledged;
+        doNothing().when(gateway).send(eq("a"), anyString(), anyString(), anyString());
+        assertTrue(notifications.deliver(pending, acknowledged::add, () -> true));
+        verify(gateway, times(1)).send("b", owner.getEmail(), "customer", "message");
+        verify(gateway, times(2)).send("a", owner.getEmail(), "customer", "message");
     }
 }

@@ -21,13 +21,13 @@ import java.util.Map;
 public class MessageController {
 
     private final MessageService messageService;
-    private final com.fiap.WtcSync.application.services.ChatNotifications notifications;
+    private final com.fiap.WtcSync.application.services.ChatPushOutbox notifications;
 
     private final com.fiap.WtcSync.application.services.AccountAccess access;
 
     public MessageController(MessageService messageService, com.fiap.WtcSync.application.services.AccountAccess access,
             com.fiap.WtcSync.application.services.SupportQueueService queue, com.fiap.WtcSync.application.services.SupportEvents events,
-            com.fiap.WtcSync.application.services.ChatNotifications notifications) {
+            com.fiap.WtcSync.application.services.ChatPushOutbox notifications) {
         this.notifications = notifications;
         this.queue = queue; this.events = events;
         this.access = access;

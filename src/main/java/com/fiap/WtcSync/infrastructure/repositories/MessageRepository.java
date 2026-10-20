@@ -80,7 +80,7 @@ public class MessageRepository implements IMessageRepository {
         Query keyed = new Query(Criteria.where("_id").is(id).and("deleted").ne(true)
                 .and("senderId").regex("^" + java.util.regex.Pattern.quote(authorEmail) + "$", "i")
                 .and("clientMessageId").ne(null));
-        Update erase = new Update().set("deleted", true).unset("text").unset("actionUrls").unset("editedAt");
+        Update erase = new Update().set("deleted", true).unset("text").unset("actionUrls").unset("editedAt").unset("push");
         if (mongoTemplate.updateFirst(keyed, erase, Message.class).getModifiedCount() == 1) return true;
         // Older clients did not use send receipts and retain their original deletion behavior.
         query.addCriteria(Criteria.where("clientMessageId").is(null));
