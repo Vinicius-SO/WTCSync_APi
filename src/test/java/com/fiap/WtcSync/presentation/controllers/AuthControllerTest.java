@@ -41,6 +41,11 @@ class AuthControllerTest {
         var response = controller.login(new AuthRequestDTO(" test@example.com ", "password"));
         assertEquals(200, response.getStatusCode().value());
         assertEquals("jwt", response.getBody().token());
+        assertEquals("user-id", response.getBody().profile().id());
+        assertEquals("Test User", response.getBody().profile().name());
+        assertEquals(user.getEmail(), response.getBody().profile().email());
+        assertEquals("OPERATOR", response.getBody().profile().role());
+        verify(users, times(1)).findByEmail(user.getEmail());
     }
     @Test void inactiveUserCannotLogin() {
         user.setActive(false);
@@ -91,7 +96,12 @@ class AuthControllerTest {
         when(identities.verifiedGoogleEmail("valid-token")).thenReturn(user.getEmail());
         when(users.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         when(tokens.generateToken(user.getEmail())).thenReturn("jwt");
-        assertEquals(200, controller.loginWithGoogle(Map.of("idToken", "valid-token")).getStatusCode().value());
+        var response = controller.loginWithGoogle(Map.of("idToken", "valid-token"));
+        assertEquals(200, response.getStatusCode().value());
+        var body = (com.fiap.WtcSync.application.dtos.AuthResponseDTO) response.getBody();
+        assertEquals("user-id", body.profile().id());
+        assertEquals("OPERATOR", body.profile().role());
+        verify(users, times(1)).findByEmail(user.getEmail());
     }
     @Test void forgedGoogleIdentityCannotReachAccountLookup() throws Exception {
         when(identities.verifiedGoogleEmail("forged")).thenThrow(new TokenVerifier.VerificationException("invalid"));

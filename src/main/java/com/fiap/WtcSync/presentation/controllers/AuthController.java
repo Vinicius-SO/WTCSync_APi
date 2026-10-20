@@ -64,7 +64,7 @@ public class AuthController {
     }
 
     String token = tokenService.generateToken(user.getEmail());
-    return ResponseEntity.ok(new AuthResponseDTO(token, user.getEmail(), tokenService.getExpiration()));
+    return ResponseEntity.ok(sessionResponse(token, user));
   }
 
   @PostMapping("/google")
@@ -80,12 +80,19 @@ public class AuthController {
       }
       User user = existing.get();
       String token = tokenService.generateToken(user.getEmail());
-      return ResponseEntity.ok(new AuthResponseDTO(token, user.getEmail(), tokenService.getExpiration()));
+      return ResponseEntity.ok(sessionResponse(token, user));
     } catch (TokenVerifier.VerificationException e) {
       return ResponseEntity.status(401).build();
     } catch (IllegalStateException e) {
       return ResponseEntity.status(503).build();
     }
+  }
+
+  private AuthResponseDTO sessionResponse(String token, User user) {
+    var profile = new AuthResponseDTO.Profile(user.getId() == null ? user.getEmail() : user.getId(),
+        user.getEmail(), user.getName() == null ? user.getEmail() : user.getName(),
+        com.fiap.WtcSync.application.services.AccountAccess.canonicalRole(user.getRole()));
+    return new AuthResponseDTO(token, user.getEmail(), tokenService.getExpiration(), profile);
   }
 
   @PostMapping("/register")
